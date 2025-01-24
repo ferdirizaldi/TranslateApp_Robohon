@@ -9,7 +9,7 @@ android {
     buildToolsVersion "25.0.2"
 
     defaultConfig {
-        applicationId "jp.co.sharp.workTogether.app"
+        applicationId "jp.co.sharp.translate.app"
         minSdkVersion 21
         targetSdkVersion 21
     }

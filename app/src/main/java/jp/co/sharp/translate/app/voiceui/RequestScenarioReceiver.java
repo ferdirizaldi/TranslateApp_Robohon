@@ -1,4 +1,4 @@
-package jp.co.sharp.workTogether.app.voiceui;
+package jp.co.sharp.translate.app.voiceui;
 
 
 import android.content.BroadcastReceiver;
