@@ -219,15 +219,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                 if(ScenarioDefinitions.FUNC_SPEAK_AGAIN.equals(function)){//againシナリオのspeak_again関数
                     Log.v(TAG, "Again Scenario Ended");
                     if(speak_again_flag == 1){//speak_againフラグが立っている、つまり一度speakシナリオが起動しているときだけ実行
-                        int result = VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAK);//speakシナリオを起動する
-                        if(Objects.equals(result,VoiceUIManager.VOICEUI_ERROR)){
-                            speak_again_flag = 0;//不具合時はspeak_againフラグを下げる
-                            Log.v(TAG, "Speak Scenario Failed To Start");
-                            VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_TRANSLATE);//errorシナリオのtranslateトピックを起動する
-                        }else {
-                            speak_flag = 1;//speakシナリオが正常に開始したらフラグを立てる
-                            Log.v(TAG, "Speak Scenario Started Again");
-                        }
+                        handleTextProcessing();//テキストボックスから入力をとってspeakシナリオへ
                     }
                 }
                 if(ScenarioDefinitions.FUNC_END_APP.equals(function)){//endシナリオのend_app関数
@@ -238,6 +230,8 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                     //翻訳先言語をString変数に格納
                     final String targetLanguage = VoiceUIVariableUtil.getVariableData(variables, ScenarioDefinitions.KEY_TARGET);
                     Log.v(TAG, "Receive Change Target Language Voice Command Heard. Target Is " + targetLanguage);
+                    //翻訳先言語をspeakシナリオの手が届くpメモリに送る
+                    int result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_TRANSLATED_WORD, targetLanguage);
                     // R.array.languagesの内容をString配列として取得
                     String[] items = getResources().getStringArray(R.array.languages);
                     for(int i = 0; i < items.length; i++){
