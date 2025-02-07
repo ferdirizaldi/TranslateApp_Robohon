@@ -6,3 +6,5 @@
 /app/build/
 gradle.properties
 *.iml
+# Ignore local.properties (contains API keys)
+local.properties

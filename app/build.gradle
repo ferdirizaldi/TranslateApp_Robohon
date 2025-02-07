@@ -4,6 +4,16 @@ repositories{
     maven { url 'https://repo1.maven.org/maven2' }
 }
 
+// Load local.properties
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(new FileInputStream(localPropertiesFile))
+}
+
+// Read GPT API Key from local.properties
+def gptApiKey = localProperties.getProperty("GPT_API_KEY", "")
+
 android {
     compileSdkVersion 21
     buildToolsVersion "25.0.2"
@@ -12,6 +22,8 @@ android {
         applicationId "jp.co.sharp.translate.app"
         minSdkVersion 21
         targetSdkVersion 21
+        // Inject the API key into BuildConfig
+        buildConfigField "String", "GPT_API_KEY", "\"${gptApiKey}\""
     }
     buildTypes {
         release {
