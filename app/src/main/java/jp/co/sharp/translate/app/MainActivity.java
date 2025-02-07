@@ -140,6 +140,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
 
         //TASK
         //シナリオのpメモリからtargetLanguageを取得し言語切り替えボックスに設定
+        //シナリオの関数でキーにpメモリ名をいれてこっちで受け取るのはできないっぽい？
         //
 
         //アプリ起動時に翻訳APIのテストをして発話を実行
@@ -265,10 +266,11 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
     }
 
 
+    //TASK この関数かもっと奥の翻訳する関数でString targetLanguage = spinner.getSelectedItem().toString();で翻訳先言語を入力ボックスから取得し使用する
     /**
      * 翻訳をしてspeakシナリオを開始させる関数
      */
-    private void startSpeakScenario(final String original_word){//String targetLanguage = spinner.getSelectedItem().toString();で翻訳先言語を入力ボックスから取得し使用する
+    private void startSpeakScenario(final String original_word){
         if(speak_flag == 1){
             Log.v(TAG, "Speak Scenario Is During Execution");
             return;//すでにspeakシナリオが実行中の場合はリターン
