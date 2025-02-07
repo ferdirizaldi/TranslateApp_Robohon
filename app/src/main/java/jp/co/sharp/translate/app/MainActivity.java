@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;//追加1/17 multilingualからのコピペ
-import android.util.Log;
 import android.view.View;//追加1/17 multilingualからのコピペ
 import android.view.WindowManager;
 import android.widget.Button;//追加1/17 multilingualからのコピペ
@@ -22,6 +21,8 @@ import java.util.List;
 import java.util.Locale;//追加1/17 multilingualからのコピペ
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
+import java.util.Arrays;
+import android.util.Log;
 
 import jp.co.sharp.android.voiceui.VoiceUIManager;
 import jp.co.sharp.android.voiceui.VoiceUIVariable;
@@ -139,7 +140,8 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
         speak_again_flag = 0;
 
         //TASK
-        //シナリオのpメモリからtargetLanguageを取得し言語切り替えボックスに設定
+        //シナリオのpメモリからtargetLanguageを取得し言語切り替えボックスに設定したい
+        //専用のシナリオを呼んでレシーバーで処理？
         //シナリオの関数でキーにpメモリ名をいれてこっちで受け取るのはできないっぽい？
         //
 
@@ -227,7 +229,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                     Log.v(TAG, "Receive End Voice Command heard");
                     finish();//アプリを終了する
                 }
-                if(ScenarioDefinitions.FUNC_SET_TARGET.equals(function)){//targetLanguageシナリオ
+                if(ScenarioDefinitions.FUNC_SET_TARGET.equals(function)) {//targetLanguageシナリオ
                     //翻訳先言語をString変数に格納
                     final String targetLanguage = VoiceUIVariableUtil.getVariableData(variables, ScenarioDefinitions.KEY_TARGET);
                     Log.v(TAG, "Receive Change Target Language Voice Command Heard. Target Is " + targetLanguage);
@@ -235,21 +237,12 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                     int result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_TRANSLATED_WORD, targetLanguage);
                     // R.array.languagesの内容をString配列として取得
                     String[] items = getResources().getStringArray(R.array.languages);
-                    for(int i = 0; i < items.length; i++){
-                        if(Objects.equals(items[i], targetLanguage)) {//targetStringがR.array.languagesの何番目かチェックして
-                            // UIスレッドで実行
-                            int finalI = i;
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    spinner.setSelection(finalI);//翻訳先言語ボックスを入力された言語に切り替える
-                                }
-                            });
-                            break;//forループから抜ける
-                        }
-                    }
+                    // UIスレッドで翻訳先言語ボックスを入力された言語(の番号を検索しその番号)に切り替える
+                    runOnUiThread(() -> {
+                        spinner.setSelection(Arrays.asList(items).indexOf(targetLanguage));
+                    });
                     if(!inputTextValue.getText().toString().trim().equals("")) {//入力バーに単語が入力済みなら
-                        handleTextProcessing();
+                        handleTextProcessing();//テキストボックスから入力をとってspeakシナリオへ
                     }else {//入力されていなければ
                         speak_flag = 1;//発話中はフラグを立てておく
                         VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ACCOSTS + ".t2");//言語設定変更時の発話
