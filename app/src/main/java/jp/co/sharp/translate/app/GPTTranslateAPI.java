@@ -21,7 +21,7 @@ public class GPTTranslateAPI {
     private static final String API_KEY = BuildConfig.GPT_API_KEY;
     //GPT_API_KEY = "sk-proj-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 
-    public static void translateAsync(final String text, final String targetLanguage, final TranslationCallback callback) {
+    public static void translateAsync(final String text, final String targetLanguage, final GPTAPIResultCallback callback) {
         new Thread(() -> {
             try {
                 URL url = new URL(API_URL);
@@ -67,7 +67,7 @@ public class GPTTranslateAPI {
     }
 
     // Function to request explanation (50-character limit)
-    public static void explainResultAsync(String translatedText, String targetLanguage, TranslationCallback callback) {
+    public static void explainResultAsync(String translatedText, String targetLanguage, GPTAPIResultCallback callback) {
         new Thread(() -> {
             try {
                 URL url = new URL(API_URL);
@@ -109,7 +109,7 @@ public class GPTTranslateAPI {
     }
 
     // Helper function to handle error responses
-    private static void handleErrorResponse(HttpsURLConnection connection, TranslationCallback callback, int responseCode) throws IOException {
+    private static void handleErrorResponse(HttpsURLConnection connection, GPTAPIResultCallback callback, int responseCode) throws IOException {
         BufferedReader errorReader = new BufferedReader(new InputStreamReader(connection.getErrorStream(), "UTF-8"));
         StringBuilder errorResponse = new StringBuilder();
         String errorLine;
@@ -138,7 +138,7 @@ public class GPTTranslateAPI {
     }
 
     // Callback interface
-    public interface TranslationCallback {
+    public interface GPTAPIResultCallback {
         void onSuccess(String translatedText);
         void onError(String errorMessage);
     }

@@ -400,7 +400,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
         return translatedTextHolder[0]; // 翻訳結果を返す
     }
 
-    private void translate(String original_word, TranslationResultCallback callback) {
+    private void translate(String original_word, GPTAPIResultCallback callback) {
 
         // 翻訳結果の言語を選択
         String targetLanguage = "en";
@@ -419,10 +419,6 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                 callback.onResult(null);
             }
         });
-    }
-
-    public interface TranslationResultCallback {
-        void onResult(String result);
     }
 
     //翻訳結果の説明
@@ -444,13 +440,13 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
         return explainTextHolder[0]; // 翻訳結果を返す
     }
 
-    private void explain(String translated_word, TranslationResultCallback callback) {
+    private void explain(String translated_word, GPTAPIResultCallback callback) {
 
         // 翻訳結果の言語を選択
         String targetLanguage = "en";
 
         // 非同期の関数を呼び出し
-        GPTTranslateAPI.explainResultAsync(translated_word, targetLanguage, new GPTTranslateAPI.TranslationCallback() {
+        GPTTranslateAPI.explainResultAsync(translated_word, targetLanguage, new GPTTranslateAPI.GPTAPIResultCallback() {
             @Override
             public void onSuccess(String translatedText) {
                 // Pass the translated text to the callback
@@ -463,6 +459,10 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                 callback.onResult(null);
             }
         });
+    }
+
+    public interface GPTAPIResultCallback {
+        void onResult(String result);
     }
 
     /**
