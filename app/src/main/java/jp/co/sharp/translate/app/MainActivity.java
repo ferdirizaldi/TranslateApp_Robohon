@@ -14,6 +14,9 @@ import android.widget.Button;//追加1/17 multilingualからのコピペ
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toolbar;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.AdapterView;
 
 import java.util.List;
 import java.util.Locale;//追加1/17 multilingualからのコピペ
@@ -47,7 +50,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
      * ホームボタンイベント検知.
      */
     private HomeEventReceiver mHomeEventReceiver;
-
+    private Spinner spinner;//スピナーの入力をいろんな関数で得るためここで宣言
     private EditText inputTextValue;
     private TextView outputTextValue;
     private int speak_flag;//speakシナリオ実行中に立つフラグ
@@ -93,6 +96,12 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
             finish();
         });
 
+        //言語切り替えボックスを作成し、対応言語一覧をセット
+        spinner = (Spinner) findViewById(R.id.spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.languages, R.layout.spinner_layout);
+        adapter.setDropDownViewResource(R.layout.spinner_layout);
+        spinner.setAdapter(adapter);//最初に表示されるのはlanguagesの一番上にある英語
+
     }
 
     /**
@@ -129,10 +138,14 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
         speak_flag = 0;
         speak_again_flag = 0;
 
+        //TASK
+        //シナリオのpメモリからtargetLanguageを取得し言語切り替えボックスに設定
+        //
+
         //アプリ起動時に翻訳APIのテストをして発話を実行
         final String test_translated_word = translateSync("りんご");//適当な単語を英訳してtest_translated_wordを作成する
         if(!test_translated_word.contains("Error during translation")){
-            VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_HELLO);//アプリ開始時の発話
+            VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ACCOSTS + ".t1");//アプリ開始時の発話
         }else{
             Log.v(TAG, "Test_translated_word Is Error Message");
             VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_CONNECTION);//接続が失敗したときの発話
@@ -169,8 +182,6 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
         //インスタンスのごみ掃除.
         mVUIManager = null;
         mVUIListener = null;
-
-        System.exit(0);
     }
 
     /**
@@ -223,6 +234,32 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                     Log.v(TAG, "Receive End Voice Command heard");
                     finish();//アプリを終了する
                 }
+                if(ScenarioDefinitions.FUNC_SET_TARGET.equals(function)){//targetLanguageシナリオ
+                    //翻訳先言語をString変数に格納
+                    final String targetLanguage = VoiceUIVariableUtil.getVariableData(variables, ScenarioDefinitions.KEY_TARGET);
+                    Log.v(TAG, "Receive Change Target Language Voice Command Heard. Target Is " + targetLanguage);
+                    // R.array.languagesの内容をString配列として取得
+                    String[] items = getResources().getStringArray(R.array.languages);
+                    for(int i = 0; i < items.length; i++){
+                        if(Objects.equals(items[i], targetLanguage)) {//targetStringがR.array.languagesの何番目かチェックして
+                            // UIスレッドで実行
+                            int finalI = i;
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    spinner.setSelection(finalI);//翻訳先言語ボックスを入力された言語に切り替える
+                                }
+                            });
+                            break;//forループから抜ける
+                        }
+                    }
+                    if(!inputTextValue.getText().toString().trim().equals("")) {//入力バーに単語が入力済みなら
+                        handleTextProcessing();
+                    }else {//入力されていなければ
+                        speak_flag = 1;//発話中はフラグを立てておく
+                        VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ACCOSTS + ".t2");//言語設定変更時の発話
+                    }
+                }
                 break;
             case VoiceUIListenerImpl.RESOLVE_VARIABLE:
             case VoiceUIListenerImpl.ACTION_START:
@@ -237,7 +274,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
     /**
      * 翻訳をしてspeakシナリオを開始させる関数
      */
-    private void startSpeakScenario(final String original_word){
+    private void startSpeakScenario(final String original_word){//String targetLanguage = spinner.getSelectedItem().toString();で翻訳先言語を入力ボックスから取得し使用する
         if(speak_flag == 1){
             Log.v(TAG, "Speak Scenario Is During Execution");
             return;//すでにspeakシナリオが実行中の場合はリターン
@@ -339,12 +376,9 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
         });
     }
 
-
     public interface TranslationResultCallback {
         void onResult(String result);
     }
-
-
 
     /**
      * ホームボタンの押下イベントを受け取るためのBroadcastレシーバークラス.<br>

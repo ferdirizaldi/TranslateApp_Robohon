@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<hvml version="2.0">
+    <head>
+        <producer>jp.co.sharp.translate.app</producer>
+        <description>翻訳先言語切り替えコマンドを聞き取りアプリに送るシナリオ</description>
+        <scene value="jp.co.sharp.translate.app.scene_common"/>
+        <version value="1.0"/>
+        <situation priority="74" topic_id="英語" trigger="user-word">${Lvcsr:Basic} include [英語に,いごに,英語で,いごで]</situation>
+        <situation priority="74" topic_id="中国語" trigger="user-word">${Lvcsr:Basic} include [中国語に,うごくごに,中国語で,うごくごで]</situation>
+    </head>
+    <body>
+        <topic id="英語" listen="false">
+            <action index="1">
+                <memory type="permanent" key="targetLanguage" value="英語"/>
+            </action>
+            <action id="2">
+                <control function="set_targetLanguage" target="jp.co.sharp.translate.app">
+                    <data key="targetLanguage" value="英語"/>
+                </control>
+            </action>
+        </topic>
+        <topic id="中国語" listen="false">
+            <action index="1">
+                <memory type="permanent" key="targetLanguage" value="中国語"/>
+            </action>
+            <action id="2">
+                <control function="set_targetLanguage" target="jp.co.sharp.translate.app">
+                    <data key="targetLanguage" value="中国語"/>
+                </control>
+            </action>
+        </topic>
+    </body>
+</hvml>

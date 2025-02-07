@@ -51,7 +51,7 @@ public class ScenarioDefinitions {
     /**
      * accost名: アプリ開始時の発話
      */
-    public static final String ACC_HELLO = PACKAGE + ".hello";
+    public static final String ACC_ACCOSTS = PACKAGE + ".accosts";
     /**
      * シナリオ：speakシナリオ
      */
@@ -86,9 +86,17 @@ public class ScenarioDefinitions {
      */
     public static final String FUNC_END_APP = "end_app";
     /**
+     * 関数名：end_app
+     */
+    public static final String FUNC_SET_TARGET = "set_targetLanguage";
+    /**
      * キー：lvcsr_basic
      */
     public static final String KEY_LVCSR_BASIC = "Lvcsr_Basic";
+    /**
+     * キー：targetLanguage
+     */
+    public static final String KEY_TARGET = "targetLanguage";
     /**
      * 翻訳前の単語
      */
