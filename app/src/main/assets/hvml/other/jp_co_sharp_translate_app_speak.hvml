@@ -14,7 +14,7 @@
                 <behavior id="${resolver:motion_ok(${resolver:ok_id})}" type="normal"/>
             </action>
             <action index="2">
-                <speech>${memory_p:jp.co.sharp.translate.app.original_word}は英語で${memory_p:jp.co.sharp.translate.app.translated_word}っていうらしいよ</speech>
+                <speech>${memory_p:jp.co.sharp.translate.app.original_word}は${memory_p:jp.co.sharp.translate.app.targetLanguage}で${memory_p:jp.co.sharp.translate.app.translated_word}っていうらしいよ</speech>
                 <behavior id="assign" type="normal"/>
             </action>
             <next href="#t2" type="default"/>

@@ -10,20 +10,14 @@
     </head>
     <body>
         <topic id="英語" listen="false">
-            <action index="1">
-                <memory type="permanent" key="targetLanguage" value="英語"/>
-            </action>
-            <action id="2">
+            <action id="1">
                 <control function="set_targetLanguage" target="jp.co.sharp.translate.app">
                     <data key="targetLanguage" value="英語"/>
                 </control>
             </action>
         </topic>
         <topic id="中国語" listen="false">
-            <action index="1">
-                <memory type="permanent" key="targetLanguage" value="中国語"/>
-            </action>
-            <action id="2">
+            <action id="1">
                 <control function="set_targetLanguage" target="jp.co.sharp.translate.app">
                     <data key="targetLanguage" value="中国語"/>
                 </control>
