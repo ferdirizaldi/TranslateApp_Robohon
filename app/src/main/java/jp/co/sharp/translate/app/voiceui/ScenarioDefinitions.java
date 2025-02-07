@@ -57,6 +57,10 @@ public class ScenarioDefinitions {
      */
     public static final String ACC_SPEAK =  ScenarioDefinitions.PACKAGE + ".speak";
     /**
+     * シナリオ：speakシナリオ
+     */
+    public static final String ACC_SPEAK_EXPLANATION =  ScenarioDefinitions.PACKAGE + ".speak_explanation";
+    /**
      * シナリオ名：listenシナリオ
      */
     public static final String ACC_LISTEN =  ScenarioDefinitions.PACKAGE + ".listen";
@@ -105,4 +109,8 @@ public class ScenarioDefinitions {
      * 翻訳後の単語
      */
     public static final String MEM_P_TRANSLATED_WORD = ScenarioDefinitions.PACKAGE + ".translated_word";
+    /**
+     * 翻訳結果の説明文章
+     */
+    public static final String MEM_P_EXPLAIN_WORDS = ScenarioDefinitions.PACKAGE + ".explanation_word";
 }

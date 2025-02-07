@@ -310,6 +310,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
         }
 
         result = VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAK);//speakシナリオを起動する
+
         if(Objects.equals(result,VoiceUIManager.VOICEUI_ERROR)){
             Log.v(TAG, "Speak Scenario Failed To Start");
             speak_again_flag = 0;//不具合時はspeak_againフラグを下げる
@@ -329,6 +330,61 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
         }
     }
 
+    /**
+     * 翻訳した結果で、explainシナリオを開始させる関数
+     */
+    private void startExplainScenario(final String translated_word){
+        if(speak_flag == 1){
+            Log.v(TAG, "Speak Scenario Is During Execution");
+            return;//すでにspeakシナリオが実行中の場合はリターン
+        }
+        if(Objects.equals(translated_word,null) || translated_word.length() > max_length){
+            Log.v(TAG, "translated_word for explaining Is Wrong");
+            speak_again_flag = 0;//不具合時はspeak_againフラグを下げる
+            VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_TRANSLATE);//errorシナリオのexplainトピックを起動する
+            return;//translated_wordが不正な場合はリターン
+        }
+
+        final String explanation_words = explainSync(translated_word);//translated_wordをGPTのAPIに送信して、その説明を取得する
+        if(explanation_words.contains("Error during explanation request")){
+            Log.v(TAG, "explanation_words Is Error Message");
+            speak_again_flag = 0;//不具合時はspeak_againフラグを下げる
+            VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_CONNECTION);//errorシナリオのconnectionトピックを起動する
+            return;//explanation_wordsがエラーメッセージなのでリターン
+        }
+        if(Objects.equals(explanation_words, null) || translated_word.length() > max_length){
+            Log.v(TAG, "explanation_words Is Wrong");
+            speak_again_flag = 0;//不具合時はspeak_againフラグを下げる
+            VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_TRANSLATE);//errorシナリオのtranslateトピックを起動する
+            return;//translated_wordが不正な場合はリターン
+        }
+
+        int result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_ORIGINAL_WORD, translated_word);//翻訳前の単語をspeakシナリオの手が届くpメモリに送る
+        if(Objects.equals(result,VoiceUIManager.VOICEUI_ERROR)){
+            Log.v(TAG, "Set translated_word Failed");
+            speak_again_flag = 0;//不具合時はspeak_againフラグを下げる
+            VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_TRANSLATE);//errorシナリオのtranslateトピックを起動する
+            return;//original_wordのpメモリへの保存が失敗したらリターン
+        }
+        result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_TRANSLATED_WORD, explanation_words);//翻訳後の単語をspeakシナリオの手が届くpメモリに送る
+        if(Objects.equals(result,VoiceUIManager.VOICEUI_ERROR)){
+            Log.v(TAG, "Set explanation_words Failed");
+            speak_again_flag = 0;//不具合時はspeak_againフラグを下げる
+            VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_TRANSLATE);//errorシナリオのtranslateトピックを起動する
+            return;//translated_wordのpメモリへの保存が失敗したらリターン
+        }
+
+        result = VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAK);//speakシナリオを起動する
+        if(Objects.equals(result,VoiceUIManager.VOICEUI_ERROR)){
+            Log.v(TAG, "Speak Explanation Scenario Failed To Start");
+            speak_again_flag = 0;//不具合時はspeak_againフラグを下げる
+            VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_TRANSLATE);//errorシナリオのtranslateトピックを起動する
+        }else{
+            speak_flag = 1;//speakシナリオが正常に開始したらフラグを立てる
+            speak_again_flag = 1;
+            Log.v(TAG, "Speak Explain Scenario Started");
+        }
+    }
 
     //日本語から英語に翻訳
     private String translateSync(String original_word) {
@@ -372,6 +428,46 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
 
     public interface TranslationResultCallback {
         void onResult(String result);
+    }
+
+    //翻訳結果の説明
+    private String explainSync(String translated_word) {
+        final String[] explainTextHolder = new String[1];
+        CountDownLatch latch = new CountDownLatch(1);
+
+        explain(translated_word, result -> {
+            explainTextHolder[0] = result;
+            latch.countDown(); // 翻訳処理が終わったサイン
+        });
+
+        try {
+            latch.await(); // コールバックが終わるまで待機
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return explainTextHolder[0]; // 翻訳結果を返す
+    }
+
+    private void explain(String translated_word, TranslationResultCallback callback) {
+
+        // 翻訳結果の言語を選択
+        String targetLanguage = "en";
+
+        // 非同期の関数を呼び出し
+        GPTTranslateAPI.explainResultAsync(translated_word, targetLanguage, new GPTTranslateAPI.TranslationCallback() {
+            @Override
+            public void onSuccess(String translatedText) {
+                // Pass the translated text to the callback
+                callback.onResult(translatedText);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                // Pass null or an error message to the callback
+                callback.onResult(null);
+            }
+        });
     }
 
     /**
