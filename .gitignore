@@ -9,3 +9,4 @@ gradle.properties
 # Ignore local.properties (contains API keys)
 local.properties
 local.properties
+local.properties
