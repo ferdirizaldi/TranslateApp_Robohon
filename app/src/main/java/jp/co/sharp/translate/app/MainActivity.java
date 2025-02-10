@@ -374,7 +374,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
             VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_TRANSLATE);//errorシナリオのtranslateトピックを起動する
             return;//original_wordのpメモリへの保存が失敗したらリターン
         }
-        result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_TRANSLATED_WORD, explanation_words);//翻訳後の単語をspeakシナリオの手が届くpメモリに送る
+        result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_EXPLAIN_WORDS, explanation_words);//翻訳後の単語をspeakシナリオの手が届くpメモリに送る
         if(Objects.equals(result,VoiceUIManager.VOICEUI_ERROR)){
             Log.v(TAG, "Set explanation_words Failed");
             speak_again_flag = 0;//不具合時はspeak_againフラグを下げる
