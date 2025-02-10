@@ -171,7 +171,6 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
             Log.v(TAG, "Test_translated_word Is Error Message");
             VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_CONNECTION);//接続が失敗したときの発話
         }
-
     }
 
     @Override
