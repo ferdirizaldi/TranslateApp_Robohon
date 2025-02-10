@@ -89,6 +89,15 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
             }
         });
 
+        // 説明ボタン表示
+        Button resultExpainButton = (Button) findViewById(R.id.result_explain_button);
+        resultExpainButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startExplainScenario(String.valueOf(outputTextValue.getText().toString()));
+            }
+        });
+
         // 終了ボタン取得
         Button finishButton = (Button) findViewById(R.id.finish_app_button);
 
