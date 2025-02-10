@@ -7,7 +7,7 @@
         <version value="1.0"/>
         <situation priority="74" topic_id="英語" trigger="user-word">${Lvcsr:Basic} include [英語に,いごに,英語で,いごで]</situation>
         <situation priority="74" topic_id="中国語" trigger="user-word">${Lvcsr:Basic} include [中国語に,うごくごに,中国語で,うごくごで]</situation>
-        <situation priority="74" topic_id="日本語" trigger="user-word">${Lvcsr:Basic} include [日本語に,にほんごに,日本語で,ほんごで]</situation>
+        <situation priority="74" topic_id="韓国語" trigger="user-word">${Lvcsr:Basic} include [韓国語に,んこくごに,韓国語で,んこくごで]</situation>
     </head>
     <body>
         <topic id="英語" listen="false">
@@ -31,14 +31,14 @@
                     <data key="targetLanguage" value="中国語"/>
                 </control>
             </action>
-        </topic><topic id="日本語" listen="false">
+        </topic><topic id="韓国語" listen="false">
         <action index="1">
             <speech>${resolver:speech_ok(${resolver:ok_id})}</speech>
             <behavior id="${resolver:motion_ok(${resolver:ok_id})}" type="normal"/>
         </action>
         <action index="2">
             <control function="set_targetLanguage" target="jp.co.sharp.translate.app">
-                <data key="targetLanguage" value="日本語"/>
+                <data key="targetLanguage" value="韓国語"/>
             </control>
         </action>
     </topic>
