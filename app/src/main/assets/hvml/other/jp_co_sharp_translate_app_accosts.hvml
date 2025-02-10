@@ -33,9 +33,6 @@
                 <speech>日本語を${memory_p:jp.co.sharp.translate.app.targetLanguage}に翻訳するね</speech>
                 <behavior id="assign" type="normal"/>
             </action>
-            <action index="3">
-                <control function="end_speak" target="jp.co.sharp.translate.app"/>
-            </action>
         </topic>
     </body>
 </hvml>

@@ -84,10 +84,6 @@ public class ScenarioDefinitions {
     /**
      * 関数名：end_app
      */
-    public static final String FUNC_SPEAK_AGAIN = "speak_again";
-    /**
-     * 関数名：end_app
-     */
     public static final String FUNC_END_APP = "end_app";
     /**
      * 関数名：end_app

@@ -14,11 +14,6 @@
                 <speech>翻訳ソフトとの通信が、うまくいかないみたいだよ</speech>
                 <behavior id="assign" type="normal"/>
             </action>
-            <topic id="t2" listen="false">
-                <action index="1">
-                    <control function="end_speak" target="jp.co.sharp.translate.app"/>
-                </action>
-            </topic>
         </topic>
     </body>
     <body>
@@ -27,11 +22,6 @@
                 <speech>ごめんね、うまく翻訳できなかったよ</speech>
                 <behavior id="assign" type="normal"/>
             </action>
-            <topic id="t2" listen="false">
-                <action index="1">
-                    <control function="end_speak" target="jp.co.sharp.translate.app"/>
-                </action>
-            </topic>
         </topic>
     </body>
 </hvml>
