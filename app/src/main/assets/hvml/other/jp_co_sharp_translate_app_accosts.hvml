@@ -26,7 +26,7 @@
         </topic>
         <topic id="t2" listen="false">
             <action index="1">
-                <speech>日本語を${memory_p:jp.co.sharp.translate.app.targetLanguage}に翻訳するね</speech>
+                <speech>${memory_p:jp.co.sharp.translate.app.inputLanguage}を${memory_p:jp.co.sharp.translate.app.targetLanguage}に翻訳するね</speech>
                 <behavior id="assign" type="normal"/>
             </action>
         </topic>

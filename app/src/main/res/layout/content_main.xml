@@ -26,35 +26,37 @@
         android:padding="8dp"
         android:background="@drawable/text_box_border" />
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:orientation="horizontal"
-        android:padding="16dp">
+        android:gravity="start">
+
+
+        <Spinner
+            android:id="@+id/spinner_input"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_marginTop="0dp"
+            android:descendantFocusability="beforeDescendants"
+            android:focusableInTouchMode="true" />
 
         <Button
             android:id="@+id/voice_translate_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="0dp"
+            android:singleLine="false"
             android:text="@string/button_voice_translate"
             android:textSize="32sp" />
-
-        <Button
-            android:id="@+id/result_explain_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/button_result_explain"
-            android:textSize="32sp"
-            android:layout_marginStart="16dp"/> <!-- Space between buttons -->
-
-    </LinearLayout>
-
+    </FrameLayout>
 
     <TextView
         android:text="@string/output_text"
         android:id="@+id/output_text"
         android:textSize="24sp"
+        android:layout_marginTop="-18dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -77,7 +79,7 @@
 
 
         <Spinner
-            android:id="@+id/spinner"
+            android:id="@+id/spinner_target"
             android:layout_width="wrap_content"
             android:layout_height="80dp"
             android:layout_marginTop="0dp"

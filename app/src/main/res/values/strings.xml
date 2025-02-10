@@ -18,6 +18,7 @@
     <string-array name="languages">
         <item>英語</item>
         <item>中国語</item>
+        <item>日本語</item>
     </string-array>
 
 </resources>

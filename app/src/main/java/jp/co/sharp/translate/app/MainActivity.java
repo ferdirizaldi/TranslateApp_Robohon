@@ -16,6 +16,7 @@ import android.widget.Toolbar;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 
 import java.util.List;
 import java.util.Locale;//追加1/17 multilingualからのコピペ
@@ -51,10 +52,12 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
      * ホームボタンイベント検知.
      */
     private HomeEventReceiver mHomeEventReceiver;
-    private Spinner spinner;//スピナーの入力をいろんな関数で得るためここで宣言
+    private Spinner spinner_input;//スピナーの入力をいろんな関数で得るためここで宣言
+    private Spinner spinner_target;//スピナーの入力をいろんな関数で得るためここで宣言
     private EditText inputTextValue;
     private TextView outputTextValue;
     private final int max_length = 100;//翻訳前後の文の長さの許容限界
+    private String inputLanguage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,11 +98,46 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
             finish();
         });
 
-        //言語切り替えボックスを作成し、対応言語一覧をセット
-        spinner = (Spinner) findViewById(R.id.spinner);
+        //入力側の言語切り替えボックスを作成し、対応言語一覧をセット
+        spinner_input = (Spinner) findViewById(R.id.spinner_input);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.languages, R.layout.spinner_layout);
         adapter.setDropDownViewResource(R.layout.spinner_layout);
-        spinner.setAdapter(adapter);//最初に表示されるのはlanguagesの一番上にある英語
+        spinner_input.setAdapter(adapter);//最初に表示されるのはlanguagesの一番上にある英語
+
+        // リスナーを登録
+        spinner_input.setOnItemSelectedListener(new OnItemSelectedListener() {
+            //　アイテムが選択された時
+            @Override
+            public void onItemSelected(AdapterView<?> parent,
+                                       View view, int position, long id) {
+                Spinner spinner = (Spinner)parent;
+                String item = (String)spinner.getSelectedItem();
+                if(Objects.equals(item, "英語")){
+                    VoiceUIManagerUtil.setAsr(mVUIManager, Locale.US);//音声認識の言語設定
+                    VoiceUIManagerUtil.setTts(mVUIManager, Locale.US);//音声発話の言語設定
+                    inputLanguage = "英語";
+                }else if(Objects.equals(item, "中国語")){
+                    VoiceUIManagerUtil.setAsr(mVUIManager, Locale.CHINA);//音声認識の言語設定
+                    VoiceUIManagerUtil.setTts(mVUIManager, Locale.CHINA);//音声発話の言語設定
+                    inputLanguage = "中国語";
+                }else if(Objects.equals(item, "日本語")){
+                    VoiceUIManagerUtil.setAsr(mVUIManager, Locale.JAPAN);//音声認識の言語設定
+                    VoiceUIManagerUtil.setTts(mVUIManager, Locale.JAPAN);//音声発話の言語設定
+                    inputLanguage = "日本語";
+                }
+            }
+
+            //　アイテムが選択されなかった
+            public void onNothingSelected(AdapterView<?> parent) {
+                //
+            }
+        });
+
+        //出力側の言語切り替えボックスを作成し、対応言語一覧をセット
+        spinner_target = (Spinner) findViewById(R.id.spinner_target);
+        adapter = ArrayAdapter.createFromResource(this, R.array.languages, R.layout.spinner_layout);
+        adapter.setDropDownViewResource(R.layout.spinner_layout);
+        spinner_target.setAdapter(adapter);//最初に表示されるのはlanguagesの一番上にある英語
 
     }
 
@@ -111,7 +149,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
         String original_word = inputTextValue.getText().toString().trim();
 
         //翻訳先言語を取得
-        String targetLanguage = spinner.getSelectedItem().toString();
+        String targetLanguage = spinner_target.getSelectedItem().toString();
         //翻訳先言語をspeakシナリオの手が届くpメモリに送る
         int result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_TARGET, targetLanguage);
 
@@ -140,6 +178,9 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
 
         //Scene有効化.
         VoiceUIManagerUtil.enableScene(mVUIManager, ScenarioDefinitions.SCENE_COMMON);
+
+        inputLanguage = "日本語";//TASK 仮
+        int result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_INPUT, inputLanguage);
 
         //アプリ起動時に翻訳APIのテストをして発話を実行
         final String test_translated_word = translateSync("りんご", "en");//適当な単語を英訳してtest_translated_wordを作成する
@@ -208,7 +249,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
 
                         //ここで翻訳先言語を取得し設定する必要がある(プルダウンで言語変更した後に言語で入力した場合に備えて)
                         //翻訳先言語を取得
-                        String targetLanguage = spinner.getSelectedItem().toString();
+                        String targetLanguage = spinner_target.getSelectedItem().toString();
                         //翻訳先言語をspeakシナリオの手が届くpメモリに送る
                         int result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_TARGET, targetLanguage);
                         startSpeakScenario(original_word,targetLanguage);//翻訳して画面表示してspeakシナリオを開始させる
@@ -227,7 +268,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                     // R.array.languagesの内容をString配列として取得し、UIスレッド内で翻訳先言語ボックスを入力された言語(の番号を検索しその番号)に切り替える
                     String[] languages = getResources().getStringArray(R.array.languages);
                     runOnUiThread(() -> {
-                        spinner.setSelection(Arrays.asList(languages).indexOf(targetLanguage));
+                        spinner_target.setSelection(Arrays.asList(languages).indexOf(targetLanguage));
                     });
                     //翻訳先言語をspeakシナリオの手が届くpメモリに送る
                     int result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_TARGET, targetLanguage);//この処理を後の関数内でボックスからとったりしてやるとUIスレッドが更新を終える前にとってしまう
@@ -248,9 +289,9 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                     Log.v(TAG, "Receive Change Target Language Voice Command Heard. Target Is " + targetLanguage);
                     // R.array.languagesの内容をString配列として取得し、UIスレッド内で翻訳先言語ボックスを入力された言語(の番号を検索しその番号)に切り替える
                     String[] languages = getResources().getStringArray(R.array.languages);
-                    String finalTargetLanguage = targetLanguage;
+                    String finalTargetLanguage = targetLanguage;//UIスレッドで使用するためにfinal宣言
                     runOnUiThread(() -> {
-                        spinner.setSelection(Arrays.asList(languages).indexOf(finalTargetLanguage));
+                        spinner_target.setSelection(Arrays.asList(languages).indexOf(finalTargetLanguage));
                     });
                     //翻訳先言語をspeakシナリオの手が届くpメモリに送る
                     int result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_TARGET, targetLanguage);
@@ -266,7 +307,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
     }
 
 
-    //TASK この関数かもっと奥の翻訳する関数でString targetLanguage = spinner.getSelectedItem().toString();で翻訳先言語を入力ボックスから取得し使用する
+    //TASK この関数かもっと奥の翻訳する関数でString targetLanguage = spinner_target.getSelectedItem().toString();で翻訳先言語を入力ボックスから取得し使用する
     //とか考えていたが、他の部分との兼ね合いで引数にとる必要が生じた
     /**
      * 翻訳をしてspeakシナリオを開始させる関数

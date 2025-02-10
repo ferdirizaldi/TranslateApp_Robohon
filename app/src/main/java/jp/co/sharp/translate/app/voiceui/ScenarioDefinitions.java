@@ -122,4 +122,8 @@ public class ScenarioDefinitions {
      * 翻訳先の言語
      */
     public static final String MEM_P_TARGET = ScenarioDefinitions.PACKAGE + ".targetLanguage";
+    /**
+     * 翻訳前の言語
+     */
+    public static final String MEM_P_INPUT = ScenarioDefinitions.PACKAGE + ".inputLanguage";
 }
