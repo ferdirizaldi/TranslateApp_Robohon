@@ -94,6 +94,10 @@ public class ScenarioDefinitions {
      */
     public static final String FUNC_SET_TARGET = "set_targetLanguage";
     /**
+     * 関数名：end_app
+     */
+    public static final String FUNC_INITIAL_TARGET = "initial_targetLanguage";
+    /**
      * キー：lvcsr_basic
      */
     public static final String KEY_LVCSR_BASIC = "Lvcsr_Basic";
