@@ -13,7 +13,6 @@
                 <speech>${memory_p:jp.co.sharp.translate.app.original_word}は${memory_p:jp.co.sharp.translate.app.targetLanguage}で${memory_p:jp.co.sharp.translate.app.translated_word}っていうらしいよ</speech>
                 <behavior id="assign" type="normal"/>
             </action>
-
         </topic>
         <topic id="test" listen="false">
             <action index="1">
