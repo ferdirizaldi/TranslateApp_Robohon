@@ -254,7 +254,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                     if(!inputTextValue.getText().toString().trim().equals("")) {//入力バーに単語が入力済みなら
                         //入力テキストを取得しspeakシナリオへ
                         String original_word = inputTextValue.getText().toString().trim();
-                        startSpeakScenario(original_word,targetLanguage);//テキストボックスから入力をとって
+                        startSpeakScenario(original_word,targetLanguage);
                     }else {//入力されていなければ
                         speak_flag = 1;//発話中はフラグを立てておく
                         VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ACCOSTS + ".t2");//言語設定変更時の発話
