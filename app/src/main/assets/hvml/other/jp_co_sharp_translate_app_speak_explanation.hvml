@@ -1,0 +1,28 @@
+<?xml version="1.0" ?>
+<hvml version="2.0">
+    <head>
+        <producer>jp.co.sharp.translate.app</producer>
+        <description>英単語を発話するシナリオ</description>
+        <scene value="jp.co.sharp.translate.app.scene_common"/>
+        <version value="1.0"/>
+        <accost priority="73" topic_id="t1" word="jp.co.sharp.translate.app.speak_explanation"/>
+    </head>
+    <body>
+        <topic id="t1" listen="false">
+            <action index="1">
+                <speech>${resolver:speech_ok(${resolver:ok_id})}</speech>
+                <behavior id="${resolver:motion_ok(${resolver:ok_id})}" type="normal"/>
+            </action>
+            <action index="2">
+                <speech>説明するね！${memory_p:jp.co.sharp.translate.app.explanation_words}</speech>
+                <behavior id="assign" type="normal"/>
+            </action>
+            <next href="#t2" type="default"/>
+        </topic>
+        <topic id="t2" listen="false">
+            <action index="1">
+                <control function="end_speak" target="jp.co.sharp.translate.app"/>
+            </action>
+        </topic>
+    </body>
+</hvml>
