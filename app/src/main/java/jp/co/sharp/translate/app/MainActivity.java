@@ -282,11 +282,11 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                     if(Objects.equals(targetLanguage, "韓国語")) {
                         VoiceUIManagerUtil.setTts(mVUIManager, Locale.KOREA);//発話言語の変更
                     }
-                    VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ACCOSTS + ".t3");
+                    VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAKS + ".t2");
                 }
                 if(ScenarioDefinitions.FUNC_ACCOST_DEFAULT.equals(function)) {
                     VoiceUIManagerUtil.setTts(mVUIManager, Locale.JAPAN);//発話言語の変更
-                    VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ACCOSTS + ".t4");
+                    VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAKS + ".t3");
                 }
                 break;
             case VoiceUIListenerImpl.RESOLVE_VARIABLE:
@@ -337,7 +337,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
             return;//translated_wordのpメモリへの保存が失敗したらリターン
         }
 
-        result = VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAK);//speakシナリオを起動する
+        result = VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAKS + ".t1");//speakシナリオを起動する
         //startExplainScenario(translated_word);
         if(Objects.equals(result,VoiceUIManager.VOICEUI_ERROR)){
             Log.v(TAG, "Speak Scenario Failed To Start");
