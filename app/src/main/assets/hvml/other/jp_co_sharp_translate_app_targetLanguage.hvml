@@ -10,14 +10,22 @@
     </head>
     <body>
         <topic id="英語" listen="false">
-            <action id="1">
+            <action index="1">
+                <speech>${resolver:speech_ok(${resolver:ok_id})}</speech>
+                <behavior id="${resolver:motion_ok(${resolver:ok_id})}" type="normal"/>
+            </action>
+            <action index="2">
                 <control function="set_targetLanguage" target="jp.co.sharp.translate.app">
                     <data key="targetLanguage" value="英語"/>
                 </control>
             </action>
         </topic>
         <topic id="中国語" listen="false">
-            <action id="1">
+            <action index="1">
+                <speech>${resolver:speech_ok(${resolver:ok_id})}</speech>
+                <behavior id="${resolver:motion_ok(${resolver:ok_id})}" type="normal"/>
+            </action>
+            <action index="2">
                 <control function="set_targetLanguage" target="jp.co.sharp.translate.app">
                     <data key="targetLanguage" value="中国語"/>
                 </control>

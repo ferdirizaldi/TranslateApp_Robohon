@@ -26,10 +26,6 @@
         </topic>
         <topic id="t2" listen="false">
             <action index="1">
-                <speech>${resolver:speech_ok(${resolver:ok_id})}</speech>
-                <behavior id="${resolver:motion_ok(${resolver:ok_id})}" type="normal"/>
-            </action>
-            <action index="2">
                 <speech>日本語を${memory_p:jp.co.sharp.translate.app.targetLanguage}に翻訳するね</speech>
                 <behavior id="assign" type="normal"/>
             </action>

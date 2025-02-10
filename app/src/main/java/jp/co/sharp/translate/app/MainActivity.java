@@ -117,7 +117,6 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
 
         //speakシナリオを開始させる
         startSpeakScenario(original_word,targetLanguage);
-        //ボタンからスピークを開始するときはspeech_okと身振り手振りのないトピックにしたほうがいいかも
     }
 
     @Override
@@ -386,7 +385,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
 
         // 翻訳結果の言語を選択
         String targetLanguage = target_language;
-        Log.v(TAG, targetLanguage);
+        Log.v(TAG, "Start Translate:targetLanguage Is "+targetLanguage);
 
         // 非同期の関数を呼び出し
         LibreTranslateAPI.translateAsync(original_word, targetLanguage, new LibreTranslateAPI.TranslationCallback() {
