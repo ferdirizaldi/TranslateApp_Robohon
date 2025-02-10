@@ -271,7 +271,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                     //翻訳先言語をspeakシナリオの手が届くpメモリに送る
                     int result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_TARGET, targetLanguage);
                 }
-                if(ScenarioDefinitions.FUNC_ACCOST_SPECIAL.equals(function)){
+                if(ScenarioDefinitions.FUNC_ACCOST_SPECIAL.equals(function)){//speaksシナリオの中継　その1
                     targetLanguage = VoiceUIVariableUtil.getVariableData(variables, ScenarioDefinitions.KEY_TARGET);
                     if(Objects.equals(targetLanguage, "英語")) {
                         VoiceUIManagerUtil.setTts(mVUIManager, Locale.US);//発話言語の変更
@@ -284,7 +284,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                     }
                     VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAKS + ".t2");
                 }
-                if(ScenarioDefinitions.FUNC_ACCOST_DEFAULT.equals(function)) {
+                if(ScenarioDefinitions.FUNC_ACCOST_DEFAULT.equals(function)) {//speaksシナリオの中継　その2
                     VoiceUIManagerUtil.setTts(mVUIManager, Locale.JAPAN);//発話言語の変更
                     VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAKS + ".t3");
                 }
