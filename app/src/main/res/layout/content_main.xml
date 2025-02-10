@@ -26,15 +26,30 @@
         android:padding="8dp"
         android:background="@drawable/text_box_border" />
 
-    <Button
-        android:id="@+id/voice_translate_button"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="0dp"
-        android:singleLine="false"
-        android:text="@string/button_voice_translate"
-        android:textSize="32sp" />
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <Button
+            android:id="@+id/voice_translate_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_voice_translate"
+            android:textSize="32sp" />
+
+        <Button
+            android:id="@+id/result_explain_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_result_explain"
+            android:textSize="32sp"
+            android:layout_marginStart="16dp"/> <!-- Space between buttons -->
+
+    </LinearLayout>
+
 
     <TextView
         android:text="@string/output_text"
