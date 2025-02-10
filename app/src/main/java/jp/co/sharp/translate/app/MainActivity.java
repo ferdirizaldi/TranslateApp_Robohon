@@ -117,6 +117,9 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
 
         //speakシナリオを開始させる
         startSpeakScenario(original_word,targetLanguage);
+
+        //ボタンからスピークを開始するときはspeech_okと身振り手振りのないトピックにしたほうがいいかも
+
     }
 
     @Override
@@ -301,7 +304,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
         }
 
         result = VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAK);//speakシナリオを起動する
-
+        //startExplainScenario(translated_word);
         if(Objects.equals(result,VoiceUIManager.VOICEUI_ERROR)){
             Log.v(TAG, "Speak Scenario Failed To Start");
             VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_TRANSLATE);//errorシナリオのtranslateトピックを起動する
@@ -324,7 +327,8 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
     private void startExplainScenario(final String translated_word){
         if(Objects.equals(translated_word,null) || translated_word.length() > max_length){
             Log.v(TAG, "translated_word for explaining Is Wrong");
-            VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_TRANSLATE);//errorシナリオのexplainトピックを起動する
+            VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_EXPLAIN);//errorシナリオのexplainトピックを起動する
+
             return;//translated_wordが不正な場合はリターン
         }
 
@@ -336,27 +340,28 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
         }
         if(Objects.equals(explanation_words, null) || translated_word.length() > max_length){
             Log.v(TAG, "explanation_words Is Wrong");
-            VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_TRANSLATE);//errorシナリオのtranslateトピックを起動する
+            VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_EXPLAIN);//errorシナリオのtranslateトピックを起動する
             return;//translated_wordが不正な場合はリターン
         }
 
         int result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_ORIGINAL_WORD, translated_word);//翻訳前の単語をspeakシナリオの手が届くpメモリに送る
         if(Objects.equals(result,VoiceUIManager.VOICEUI_ERROR)){
             Log.v(TAG, "Set translated_word Failed");
-            VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_TRANSLATE);//errorシナリオのtranslateトピックを起動する
+            VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_EXPLAIN);//errorシナリオのtranslateトピックを起動する
             return;//original_wordのpメモリへの保存が失敗したらリターン
         }
         result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_EXPLAIN_WORDS, explanation_words);//翻訳後の単語をspeakシナリオの手が届くpメモリに送る
         if(Objects.equals(result,VoiceUIManager.VOICEUI_ERROR)){
             Log.v(TAG, "Set explanation_words Failed");
-            VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_TRANSLATE);//errorシナリオのtranslateトピックを起動する
+            VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_EXPLAIN);//errorシナリオのtranslateトピックを起動する
+
             return;//translated_wordのpメモリへの保存が失敗したらリターン
         }
 
         result = VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAK_EXPLANATION);//speakシナリオを起動する
         if(Objects.equals(result,VoiceUIManager.VOICEUI_ERROR)){
             Log.v(TAG, "Speak Explanation Scenario Failed To Start");
-            VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_TRANSLATE);//errorシナリオのtranslateトピックを起動する
+            VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_EXPLAIN);//errorシナリオのtranslateトピックを起動する
         }else{
             Log.v(TAG, "Speak Explain Scenario Started");
         }
@@ -388,7 +393,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
         Log.v(TAG, "Start Translate:targetLanguage Is "+targetLanguage);
 
         // 非同期の関数を呼び出し
-        LibreTranslateAPI.translateAsync(original_word, targetLanguage, new LibreTranslateAPI.TranslationCallback() {
+        GPTTranslateAPI.translateAsync(original_word, targetLanguage, new GPTTranslateAPI.GPTAPIResultCallback() {
             @Override
             public void onSuccess(String translatedText) {
                 // Pass the translated text to the callback

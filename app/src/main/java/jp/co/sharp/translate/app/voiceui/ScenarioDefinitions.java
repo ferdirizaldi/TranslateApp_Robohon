@@ -74,6 +74,11 @@ public class ScenarioDefinitions {
     public static final String ACC_ERROR_TRANSLATE =  ScenarioDefinitions.PACKAGE + ".error_translate";
 
     /**
+     * シナリオ名：errorシナリオのtranslateトピック
+     */
+    public static final String ACC_ERROR_EXPLAIN =  ScenarioDefinitions.PACKAGE + ".error_explain";
+
+    /**
      * 関数名：send_word
      */
     public static final String FUNC_SEND_WORD = "send_word";

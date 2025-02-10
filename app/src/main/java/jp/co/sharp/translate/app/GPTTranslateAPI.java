@@ -39,7 +39,7 @@ public class GPTTranslateAPI {
                 jsonBody.put("messages", new JSONArray()
                         .put(new JSONObject()
                                 .put("role", "system")
-                                .put("content", "君は通訳者だよ、日本語から " + targetLanguage + "に翻訳してね、意味も簡単に説明して."))
+                                .put("content", "君は通訳者だよ、日本語から " + targetLanguage + "に翻訳してね、意味だけの回答でいいよ。何も追加しないください"))
                         .put(new JSONObject()
                                 .put("role", "user")
                                 .put("content", text)));
