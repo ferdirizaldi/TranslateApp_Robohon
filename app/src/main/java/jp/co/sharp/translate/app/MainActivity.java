@@ -275,16 +275,14 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                     targetLanguage = VoiceUIVariableUtil.getVariableData(variables, ScenarioDefinitions.KEY_TARGET);
                     if(Objects.equals(targetLanguage, "英語")) {
                         VoiceUIManagerUtil.setTts(mVUIManager, Locale.US);//発話言語の変更
-                        VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ACCOSTS + ".t3");
                     }
                     if(Objects.equals(targetLanguage, "中国語")) {
                         VoiceUIManagerUtil.setTts(mVUIManager, Locale.CHINA);//発話言語の変更
-                        VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ACCOSTS + ".t3");
                     }
                     if(Objects.equals(targetLanguage, "韓国語")) {
                         VoiceUIManagerUtil.setTts(mVUIManager, Locale.KOREA);//発話言語の変更
-                        VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ACCOSTS + ".t3");
                     }
+                    VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ACCOSTS + ".t3");
                 }
                 if(ScenarioDefinitions.FUNC_ACCOST_DEFAULT.equals(function)) {
                     VoiceUIManagerUtil.setTts(mVUIManager, Locale.JAPAN);//発話言語の変更
@@ -361,10 +359,9 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
      * 翻訳した結果で、explainシナリオを開始させる関数
      */
     private void startExplainScenario(final String translated_word){
-        if(Objects.equals(translated_word,null) || translated_word.length() > max_length){
+        if(Objects.equals(translated_word,null) || translated_word.length() > max_length || Objects.equals(translated_word,"")){
             Log.v(TAG, "translated_word for explaining Is Wrong");
             VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_EXPLAIN);//errorシナリオのexplainトピックを起動する
-
             return;//translated_wordが不正な場合はリターン
         }
 
@@ -374,27 +371,13 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
             VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_CONNECTION);//errorシナリオのconnectionトピックを起動する
             return;//explanation_wordsがエラーメッセージなのでリターン
         }
-        if(Objects.equals(explanation_words, null) || translated_word.length() > max_length){
+        if(Objects.equals(explanation_words, null) || explanation_words.length() > max_length || Objects.equals(explanation_words,"")){
             Log.v(TAG, "explanation_words Is Wrong");
             VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_EXPLAIN);//errorシナリオのtranslateトピックを起動する
-            return;//translated_wordが不正な場合はリターン
+            return;//explanation_wordが不正な場合はリターン
         }
 
-        int result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_ORIGINAL_WORD, translated_word);//翻訳前の単語をspeakシナリオの手が届くpメモリに送る
-        if(Objects.equals(result,VoiceUIManager.VOICEUI_ERROR)){
-            Log.v(TAG, "Set translated_word Failed");
-            VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_EXPLAIN);//errorシナリオのtranslateトピックを起動する
-            return;//original_wordのpメモリへの保存が失敗したらリターン
-        }
-        result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_EXPLAIN_WORDS, explanation_words);//翻訳後の単語をspeakシナリオの手が届くpメモリに送る
-        if(Objects.equals(result,VoiceUIManager.VOICEUI_ERROR)){
-            Log.v(TAG, "Set explanation_words Failed");
-            VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_EXPLAIN);//errorシナリオのtranslateトピックを起動する
-
-            return;//translated_wordのpメモリへの保存が失敗したらリターン
-        }
-
-        result = VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAK_EXPLANATION);//speakシナリオを起動する
+        int result = VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAK_EXPLANATION);//speak_explanationシナリオを起動する
         if(Objects.equals(result,VoiceUIManager.VOICEUI_ERROR)){
             Log.v(TAG, "Speak Explanation Scenario Failed To Start");
             VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_EXPLAIN);//errorシナリオのtranslateトピックを起動する
