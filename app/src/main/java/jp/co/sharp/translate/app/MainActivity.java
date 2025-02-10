@@ -152,7 +152,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
         //
 
         //アプリ起動時に翻訳APIのテストをして発話を実行
-        final String test_translated_word = translateSync("りんご");//適当な単語を英訳してtest_translated_wordを作成する
+        final String test_translated_word = translateSync("りんご", "en");//適当な単語を英訳してtest_translated_wordを作成する
         if(!test_translated_word.contains("Error during translation")){
             VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ACCOSTS + ".t1");//アプリ開始時の発話
         }else{
@@ -288,7 +288,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
             return;//original_wordが不正な場合はリターン
         }
 
-        final String translated_word = translateSync(original_word);//original_wordを英訳したtranslated_wordを作成する
+        final String translated_word = translateSync(original_word, targetLanguage);//original_wordを英訳したtranslated_wordを作成する
         if(translated_word.contains("Error during translation")){
             Log.v(TAG, "Translated_word Is Error Message");
             speak_again_flag = 0;//不具合時はspeak_againフラグを下げる
@@ -395,11 +395,11 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
     }
 
     //日本語から英語に翻訳
-    private String translateSync(String original_word) {
+    private String translateSync(String original_word, String target_language) {
         final String[] translatedTextHolder = new String[1];
         CountDownLatch latch = new CountDownLatch(1);
 
-        translate(original_word, result -> {
+        translate(original_word, target_language,result -> {
             translatedTextHolder[0] = result;
             latch.countDown(); // 翻訳処理が終わったサイン
         });
@@ -413,10 +413,11 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
         return translatedTextHolder[0]; // 翻訳結果を返す
     }
 
-    private void translate(String original_word, GPTAPIResultCallback callback) {
+    private void translate(String original_word, String target_language, GPTAPIResultCallback callback) {
 
         // 翻訳結果の言語を選択
-        String targetLanguage = "en";
+        String targetLanguage = target_language;
+        Log.v(TAG, targetLanguage);
 
         // 非同期の関数を呼び出し
         LibreTranslateAPI.translateAsync(original_word, targetLanguage, new LibreTranslateAPI.TranslationCallback() {
