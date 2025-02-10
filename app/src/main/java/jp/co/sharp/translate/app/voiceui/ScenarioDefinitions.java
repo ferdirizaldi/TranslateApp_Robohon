@@ -83,10 +83,6 @@ public class ScenarioDefinitions {
      */
     public static final String FUNC_SEND_WORD = "send_word";
     /**
-     * 関数名：end_speak
-     */
-    public static final String FUNC_END_SPEAK = "end_speak";
-    /**
      * 関数名：end_app
      */
     public static final String FUNC_END_APP = "end_app";
@@ -98,6 +94,15 @@ public class ScenarioDefinitions {
      * 関数名：end_app
      */
     public static final String FUNC_INITIAL_TARGET = "initial_targetLanguage";
+    /**
+     * 関数名：end_app
+     */
+    public static final String FUNC_ACCOST_SPECIAL = "accost_special";
+    /**
+     * 関数名：end_app
+     */
+    public static final String FUNC_ACCOST_DEFAULT = "accost_default";
+
     /**
      * キー：lvcsr_basic
      */
@@ -122,8 +127,4 @@ public class ScenarioDefinitions {
      * 翻訳先の言語
      */
     public static final String MEM_P_TARGET = ScenarioDefinitions.PACKAGE + ".targetLanguage";
-    /**
-     * 翻訳前の言語
-     */
-    public static final String MEM_P_INPUT = ScenarioDefinitions.PACKAGE + ".inputLanguage";
 }

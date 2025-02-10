@@ -271,6 +271,25 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                     //翻訳先言語をspeakシナリオの手が届くpメモリに送る
                     int result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_TARGET, targetLanguage);
                 }
+                if(ScenarioDefinitions.FUNC_ACCOST_SPECIAL.equals(function)){
+                    targetLanguage = VoiceUIVariableUtil.getVariableData(variables, ScenarioDefinitions.KEY_TARGET);
+                    if(Objects.equals(targetLanguage, "英語")) {
+                        VoiceUIManagerUtil.setTts(mVUIManager, Locale.US);//発話言語の変更
+                        VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ACCOSTS + ".t3");
+                    }
+                    if(Objects.equals(targetLanguage, "中国語")) {
+                        VoiceUIManagerUtil.setTts(mVUIManager, Locale.CHINA);//発話言語の変更
+                        VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ACCOSTS + ".t3");
+                    }
+                    if(Objects.equals(targetLanguage, "韓国語")) {
+                        VoiceUIManagerUtil.setTts(mVUIManager, Locale.KOREA);//発話言語の変更
+                        VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ACCOSTS + ".t3");
+                    }
+                }
+                if(ScenarioDefinitions.FUNC_ACCOST_DEFAULT.equals(function)) {
+                    VoiceUIManagerUtil.setTts(mVUIManager, Locale.JAPAN);//発話言語の変更
+                    VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ACCOSTS + ".t4");
+                }
                 break;
             case VoiceUIListenerImpl.RESOLVE_VARIABLE:
             case VoiceUIListenerImpl.ACTION_START:
