@@ -113,4 +113,8 @@ public class ScenarioDefinitions {
      * 翻訳結果の説明文章
      */
     public static final String MEM_P_EXPLAIN_WORDS = ScenarioDefinitions.PACKAGE + ".explanation_word";
+    /**
+     * 翻訳先の言語
+     */
+    public static final String MEM_P_TARGET = ScenarioDefinitions.PACKAGE + ".targetLanguage";
 }

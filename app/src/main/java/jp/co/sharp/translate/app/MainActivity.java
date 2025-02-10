@@ -109,11 +109,17 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
      * Handle the text processing when the button is clicked.
      */
     private void handleTextProcessing() {
-        // 入力テキストを取得
+        //入力テキストを取得
         String original_word = inputTextValue.getText().toString().trim();
 
+        //翻訳先言語を取得
+        String targetLanguage = spinner.getSelectedItem().toString();
+        //翻訳先言語をspeakシナリオの手が届くpメモリに送る
+        int result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_TARGET, targetLanguage);
+
         //speakシナリオを開始させる
-        startSpeakScenario(original_word);
+        startSpeakScenario(original_word,targetLanguage);
+        //ボタンからスピークを開始するときはspeech_okと身振り手振りのないトピックにしたほうがいいかも
     }
 
     @Override
@@ -210,7 +216,12 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                             }
                         });
 
-                        startSpeakScenario(original_word);//翻訳して画面表示してspeakシナリオを開始させる
+                        //ここで翻訳先言語を取得し設定する必要がある(プルダウンで言語変更した後に言語で入力した場合に備えて)
+                        //翻訳先言語を取得
+                        String targetLanguage = spinner.getSelectedItem().toString();
+                        //翻訳先言語をspeakシナリオの手が届くpメモリに送る
+                        int result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_TARGET, targetLanguage);
+                        startSpeakScenario(original_word,targetLanguage);//翻訳して画面表示してspeakシナリオを開始させる
                     }else{
                         Log.v(TAG, "Listen Scenario Sent Empty Text");
                     }
@@ -233,16 +244,17 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                     //翻訳先言語をString変数に格納
                     final String targetLanguage = VoiceUIVariableUtil.getVariableData(variables, ScenarioDefinitions.KEY_TARGET);
                     Log.v(TAG, "Receive Change Target Language Voice Command Heard. Target Is " + targetLanguage);
-                    //翻訳先言語をspeakシナリオの手が届くpメモリに送る
-                    int result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_TRANSLATED_WORD, targetLanguage);
-                    // R.array.languagesの内容をString配列として取得
-                    String[] items = getResources().getStringArray(R.array.languages);
-                    // UIスレッドで翻訳先言語ボックスを入力された言語(の番号を検索しその番号)に切り替える
+                    // R.array.languagesの内容をString配列として取得し、UIスレッド内で翻訳先言語ボックスを入力された言語(の番号を検索しその番号)に切り替える
+                    String[] languages = getResources().getStringArray(R.array.languages);
                     runOnUiThread(() -> {
-                        spinner.setSelection(Arrays.asList(items).indexOf(targetLanguage));
+                        spinner.setSelection(Arrays.asList(languages).indexOf(targetLanguage));
                     });
+                    //翻訳先言語をspeakシナリオの手が届くpメモリに送る
+                    int result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_TARGET, targetLanguage);//この処理を後の関数内でボックスからとったりしてやるとUIスレッドが更新を終える前にとってしまう
                     if(!inputTextValue.getText().toString().trim().equals("")) {//入力バーに単語が入力済みなら
-                        handleTextProcessing();//テキストボックスから入力をとってspeakシナリオへ
+                        //入力テキストを取得しspeakシナリオへ
+                        String original_word = inputTextValue.getText().toString().trim();
+                        startSpeakScenario(original_word,targetLanguage);//テキストボックスから入力をとって
                     }else {//入力されていなければ
                         speak_flag = 1;//発話中はフラグを立てておく
                         VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ACCOSTS + ".t2");//言語設定変更時の発話
@@ -260,15 +272,16 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
 
 
     //TASK この関数かもっと奥の翻訳する関数でString targetLanguage = spinner.getSelectedItem().toString();で翻訳先言語を入力ボックスから取得し使用する
+    //とか考えていたが、他の部分との兼ね合いで引数にとる必要が生じた
     /**
      * 翻訳をしてspeakシナリオを開始させる関数
      */
-    private void startSpeakScenario(final String original_word){
+    private void startSpeakScenario(final String original_word,final String targetLanguage){
         if(speak_flag == 1){
             Log.v(TAG, "Speak Scenario Is During Execution");
             return;//すでにspeakシナリオが実行中の場合はリターン
         }
-        if(Objects.equals(original_word,null) || original_word.length() > max_length){
+        if(original_word.length() > max_length || Objects.equals(original_word,null) || Objects.equals(original_word,"")){
             Log.v(TAG, "Original_word Is Wrong");
             speak_again_flag = 0;//不具合時はspeak_againフラグを下げる
             VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_TRANSLATE);//errorシナリオのtranslateトピックを起動する
@@ -282,7 +295,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
             VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_CONNECTION);//errorシナリオのconnectionトピックを起動する
             return;//translated_wordがエラーメッセージなのでリターン
         }
-        if(Objects.equals(translated_word, null) || translated_word.length() > max_length){
+        if(translated_word.length() > max_length || Objects.equals(translated_word, null) || Objects.equals(translated_word, "")){
             Log.v(TAG, "Translated_word Is Wrong");
             speak_again_flag = 0;//不具合時はspeak_againフラグを下げる
             VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_TRANSLATE);//errorシナリオのtranslateトピックを起動する
