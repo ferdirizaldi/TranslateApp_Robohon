@@ -9,8 +9,8 @@
     <string name="button_set_memoryP">SET_Memory_p</string>
     <string name="button_get_memoryP">Get_memory_p</string>
     <string name="button_finish_app">終了</string>
-    <string name="input_text">入力単語</string>
-    <string name="output_text">出力単語</string>
+    <string name="input_text">入力：</string>
+    <string name="output_text">出力：</string>
     <string name="button_voice_translate">翻訳</string>
     <string name="default_output_text">翻訳結果</string>
     <string name="default_input_text">単語を入力してください</string>
