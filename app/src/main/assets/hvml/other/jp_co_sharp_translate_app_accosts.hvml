@@ -15,18 +15,10 @@
                     <data key="targetLanguage" value="${memory_p:jp.co.sharp.translate.app.targetLanguage}"/>
                 </control>
             </action>
-            <action index="2">
-                <speech>単語を聞かせて!</speech>
-                <behavior id="assign" type="normal"/>
-            </action>
-            <action index="3">
-                <speech>${memory_p:jp.co.sharp.translate.app.targetLanguage}に翻訳するよ!</speech>
-                <behavior id="assign" type="normal"/>
-            </action>
         </topic>
         <topic id="t2" listen="false">
             <action index="1">
-                <speech>${memory_p:jp.co.sharp.translate.app.inputLanguage}を${memory_p:jp.co.sharp.translate.app.targetLanguage}に翻訳するね</speech>
+                <speech>${memory_p:jp.co.sharp.translate.app.inputLanguage}から${memory_p:jp.co.sharp.translate.app.targetLanguage}に翻訳するよ!</speech>
                 <behavior id="assign" type="normal"/>
             </action>
         </topic>

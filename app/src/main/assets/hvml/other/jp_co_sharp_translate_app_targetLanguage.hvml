@@ -16,7 +16,10 @@
                 <behavior id="${resolver:motion_ok(${resolver:ok_id})}" type="normal"/>
             </action>
             <action index="2">
-                <control function="set_targetLanguage" target="jp.co.sharp.translate.app">
+                <memory type="permanent" key="jp.co.sharp.translate.app.targetLanguage" value="英語"/>
+            </action>
+            <action index="3">
+                <control function="initial_targetLanguage" target="jp.co.sharp.translate.app">
                     <data key="targetLanguage" value="英語"/>
                 </control>
             </action>
@@ -27,7 +30,10 @@
                 <behavior id="${resolver:motion_ok(${resolver:ok_id})}" type="normal"/>
             </action>
             <action index="2">
-                <control function="set_targetLanguage" target="jp.co.sharp.translate.app">
+                <memory type="permanent" key="jp.co.sharp.translate.app.targetLanguage" value="中国語"/>
+            </action>
+            <action index="3">
+                <control function="initial_targetLanguage" target="jp.co.sharp.translate.app">
                     <data key="targetLanguage" value="中国語"/>
                 </control>
             </action>
@@ -37,7 +43,10 @@
             <behavior id="${resolver:motion_ok(${resolver:ok_id})}" type="normal"/>
         </action>
         <action index="2">
-            <control function="set_targetLanguage" target="jp.co.sharp.translate.app">
+            <memory type="permanent" key="jp.co.sharp.translate.app.targetLanguage" value="韓国語"/>
+        </action>
+        <action index="3">
+            <control function="initial_targetLanguage" target="jp.co.sharp.translate.app">
                 <data key="targetLanguage" value="韓国語"/>
             </control>
         </action>

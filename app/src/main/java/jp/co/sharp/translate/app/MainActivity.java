@@ -54,6 +54,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
     private HomeEventReceiver mHomeEventReceiver;
     private Spinner targetSpinner;//スピナーの入力をいろんな関数で得るためここで宣言
     private String targetLanguage;//翻訳先言語をアクティビティ側でも保存する　シナリオ側ではpメモリのjp.co.sharp.translate.app.targetLanguageに保存される
+    private String inputLanguage;//翻訳前言語をアクティビティ側でも保存する　シナリオ側ではpメモリのjp.co.sharp.translate.app.inputLanguageに保存される
     private EditText inputTextValue;
     private TextView outputTextValue;
     private final int max_length = 100;//翻訳前後の文の長さの許容限界
@@ -163,14 +164,14 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
         //Scene有効化.
         VoiceUIManagerUtil.enableScene(mVUIManager, ScenarioDefinitions.SCENE_COMMON);
 
-        //アプリ起動時に翻訳APIのテストをして発話を実行
-        final String test_translated_word = translateSync("りんご");//適当な単語を英訳してtest_translated_wordを作成する
-        if(!test_translated_word.contains("Error during translation")){
-            VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ACCOSTS + ".t1");//アプリ開始時の発話、シナリオのpメモリからtargetLanguageを取得し言語切り替えボックスに設定する
-        }else{
-            Log.v(TAG, "Test_translated_word Is Error Message");
-            VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_CONNECTION);//接続が失敗したときの発話
-        }
+        //翻訳前の言語の種類を設定
+        inputLanguage = "日本語";
+        int result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_INPUT, inputLanguage);
+        VoiceUIManagerUtil.setAsr(mVUIManager, Locale.JAPAN);//認識言語の変更
+
+        //アプリ開始時にシナリオのpメモリからtargetLanguageを取得し、そのままアプリ開始時の発話まで行う
+        VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ACCOSTS + ".t1");
+
     }
 
     @Override
@@ -186,6 +187,11 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
 
         //VoiceUIListenerの解除.
         VoiceUIManagerUtil.unregisterVoiceUIListener(mVUIManager, mVUIListener);
+
+        //デフォルトの言語設定に戻す
+        Locale locale = Locale.getDefault();
+        VoiceUIManagerUtil.setAsr(mVUIManager, locale);
+        VoiceUIManagerUtil.setTts(mVUIManager, locale);
 
         //単一Activityの場合はonPauseでアプリを終了する.
         finish();
@@ -236,40 +242,29 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                     Log.v(TAG, "Receive End Voice Command heard");
                     finish();//アプリを終了する
                 }
-                if(ScenarioDefinitions.FUNC_SET_TARGET.equals(function)) {//targetLanguageシナリオ
+                if(ScenarioDefinitions.FUNC_INITIAL_TARGET.equals(function)) {//accostsシナリオやtargetLanguageシナリオから呼ばれ、翻訳先言語を設定する
                     //翻訳先言語をString変数に格納
                     targetLanguage = VoiceUIVariableUtil.getVariableData(variables, ScenarioDefinitions.KEY_TARGET);
-                    Log.v(TAG, "Receive Change Target Language Voice Command Heard. Target Is " + targetLanguage);
-                    // R.array.languagesの内容をString配列として取得し、UIスレッド内で翻訳先言語ボックスを入力された言語(の番号を検索しその番号)に切り替える
-                    String[] languages = getResources().getStringArray(R.array.targetLanguages);
-                    runOnUiThread(() -> {
-                        targetSpinner.setSelection(Arrays.asList(languages).indexOf(targetLanguage));
-                    });
-                    //翻訳先言語をspeakシナリオの手が届くpメモリに送る
-                    int result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_TARGET, targetLanguage);
-                    if (!inputTextValue.getText().toString().trim().equals("")) {//入力バーに単語が入力済みなら
-                        //入力テキストを取得しspeakシナリオへ
-                        String original_word = inputTextValue.getText().toString().trim();
-                        startSpeakScenario(original_word);
-                    } else {//入力されていなければ
-                        VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ACCOSTS + ".t2");//言語設定変更時の発話
-                    }
-                }
-                if(ScenarioDefinitions.FUNC_INITIAL_TARGET.equals(function)) {//accostsシナリオのt1
-                    //翻訳先言語をString変数に格納
-                    targetLanguage = VoiceUIVariableUtil.getVariableData(variables, ScenarioDefinitions.KEY_TARGET);
-                    if(targetLanguage == null){
+                    if(Objects.equals(targetLanguage, "null")){//設定が無いようならデフォルトの英語にする
                         targetLanguage = "英語";
+                        //翻訳先言語をspeakシナリオの手が届くpメモリに送る targetLanguageシナリオでセットメモリーできるならこの処理はif文の中でのみすればよい
+                        int result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_TARGET, targetLanguage);
                     }
-                    Log.v(TAG, "Initial Target Language. Target Is " + targetLanguage);
+
                     // R.array.languagesの内容をString配列として取得し、UIスレッド内で翻訳先言語ボックスを入力された言語(の番号を検索しその番号)に切り替える
                     String[] languages = getResources().getStringArray(R.array.targetLanguages);
                     String finalTargetLanguage = targetLanguage;//UIスレッドで使用するためにfinal宣言
                     runOnUiThread(() -> {
                         targetSpinner.setSelection(Arrays.asList(languages).indexOf(finalTargetLanguage));
                     });
-                    //翻訳先言語をspeakシナリオの手が届くpメモリに送る
-                    int result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_TARGET, targetLanguage);
+
+                    if (!inputTextValue.getText().toString().trim().equals("")) {//入力バーに単語が入力済みなら
+                        //入力テキストを取得しspeakシナリオへ
+                        String original_word = inputTextValue.getText().toString().trim();
+                        startSpeakScenario(original_word);
+                    } else {//入力されていなければ
+                        VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ACCOSTS + ".t2");//翻訳先言語設定時の発話
+                    }
                 }
                 if(ScenarioDefinitions.FUNC_ACCOST_SPECIAL.equals(function)){//speaksシナリオの中継　その1
                     targetLanguage = VoiceUIVariableUtil.getVariableData(variables, ScenarioDefinitions.KEY_TARGET);

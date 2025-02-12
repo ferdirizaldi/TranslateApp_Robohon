@@ -89,10 +89,6 @@ public class ScenarioDefinitions {
     /**
      * 関数名：end_app
      */
-    public static final String FUNC_SET_TARGET = "set_targetLanguage";
-    /**
-     * 関数名：end_app
-     */
     public static final String FUNC_INITIAL_TARGET = "initial_targetLanguage";
     /**
      * 関数名：end_app
@@ -127,4 +123,8 @@ public class ScenarioDefinitions {
      * 翻訳先の言語
      */
     public static final String MEM_P_TARGET = ScenarioDefinitions.PACKAGE + ".targetLanguage";
+    /**
+     * 翻訳前の言語
+     */
+    public static final String MEM_P_INPUT = ScenarioDefinitions.PACKAGE + ".inputLanguage";
 }
