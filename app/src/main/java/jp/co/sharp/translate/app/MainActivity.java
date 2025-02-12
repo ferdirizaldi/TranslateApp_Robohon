@@ -480,7 +480,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
             VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_CONNECTION);//errorシナリオのconnectionトピックを起動する
             return;//explanation_wordsが不正なのでリターン
         }
-
+        System.out.println(explanation_words);
         int result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_EXPLAIN_WORDS, explanation_words);//説明文章
         if(Objects.equals(result,VoiceUIManager.VOICEUI_ERROR)){
             Log.v(TAG, "Explanation word is error");

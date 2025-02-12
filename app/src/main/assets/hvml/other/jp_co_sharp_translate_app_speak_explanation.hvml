@@ -10,7 +10,17 @@
     <body>
         <topic id="t1" listen="false">
             <action index="1">
-                <speech>説明するね！${memory_p:jp.co.sharp.translate.app.explanation_words}</speech>
+                <control function="speaks_relay3" target="jp.co.sharp.translate.app"/>
+            </action>
+            <action index="2">
+                <speech>${memory_p:jp.co.sharp.translate.app.translated_word}</speech>
+                <behavior id="assign" type="normal"/>
+            </action>
+            <action index="2">
+                <control function="speaks_relay4" target="jp.co.sharp.translate.app"/>
+            </action>
+            <action index="2">
+                <speech>を日本語で説明するね！${memory_p:jp.co.sharp.translate.app.explanation_words}</speech>
                 <behavior id="assign" type="normal"/>
             </action>
         </topic>
