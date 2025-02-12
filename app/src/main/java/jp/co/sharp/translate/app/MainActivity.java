@@ -479,10 +479,10 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
         }
 
         final String explanation_words = explainSync(translated_word);//translated_wordをGPTのAPIに送信して、その説明を取得する
-        if(explanation_words.contains("Error during explanation request")){
+        if(explanation_words.contains("Error during explanation request") || Objects.equals(explanation_words,"")){
             Log.v(TAG, "explanation_words Is Error Message");
             VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_CONNECTION);//errorシナリオのconnectionトピックを起動する
-            return;//explanation_wordsがエラーメッセージなのでリターン
+            return;//explanation_wordsが不正なのでリターン
         }
 
         int result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_EXPLAIN_WORDS, explanation_words);//説明文章
@@ -490,12 +490,6 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
             Log.v(TAG, "Explaination word is error");
             VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_TRANSLATE);//errorシナリオのtranslateトピックを起動する
             return;//translated_wordのpメモリへの保存が失敗したらリターン
-        }
-
-        if(Objects.equals(explanation_words, null) || Objects.equals(explanation_words,"")){
-            Log.v(TAG, "explanation_words Is Wrong");
-            VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_EXPLAIN);//errorシナリオのtranslateトピックを起動する
-            return;//explanation_wordが不正な場合はリターン
         }
 
         result = VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAK_EXPLANATION);//speak_explanationシナリオを起動する

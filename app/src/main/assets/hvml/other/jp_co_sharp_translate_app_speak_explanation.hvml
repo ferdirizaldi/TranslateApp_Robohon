@@ -13,7 +13,6 @@
                 <speech>説明するね！${memory_p:jp.co.sharp.translate.app.explanation_words}</speech>
                 <behavior id="assign" type="normal"/>
             </action>
-            <next href="#t2" type="default"/>
         </topic>
     </body>
 </hvml>
