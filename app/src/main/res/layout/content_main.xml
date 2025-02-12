@@ -1,108 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:showIn="@layout/activity_main"
-    tools:context=".MainActivity"
-    android:orientation="vertical">
+    tools:context=".MainActivity">
 
-
-    <TextView
-        android:text="@string/input_text"
-        android:id="@+id/input_text"
-        android:textSize="24sp"
-        android:layout_marginTop="50sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-
-    <EditText
-        android:id="@+id/input_text_value"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/default_input_text"
-        android:textSize="18sp"
-        android:padding="8dp"
-        android:background="@drawable/text_box_border" />
+        android:layout_height="wrap_content">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="start">
-
-        <Spinner
-            android:id="@+id/spinner_input"
-            android:layout_width="128dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="-10dp"
-            android:descendantFocusability="beforeDescendants"
-            android:focusableInTouchMode="true"
-            android:padding="5dp" />
-
-        <Button
-            android:id="@+id/voice_translate_button"
+        <TextView
+            android:text="@string/input_text"
+            android:id="@+id/input_text"
+            android:textSize="24sp"
+            android:layout_marginTop="50sp"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/input_text_value"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="0dp"
-            android:singleLine="false"
-            android:text="@string/button_voice_translate"
-            android:textSize="32sp" />
-    </FrameLayout>
+            android:hint="@string/default_input_text"
+            android:textSize="18sp"
+            android:padding="8dp"
+            android:background="@drawable/text_box_border" />
 
-    <TextView
-        android:text="@string/output_text"
-        android:id="@+id/output_text"
-        android:textSize="24sp"
-        android:layout_marginTop="-5dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="start">
 
-    <TextView
-        android:id="@+id/output_text_value"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:hint="@string/default_output_text"
-        android:textSize="18sp"
-        android:background="@drawable/text_box_border" />
+            <Spinner
+                android:id="@+id/spinner_input"
+                android:layout_width="128dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="-10dp"
+                android:descendantFocusability="beforeDescendants"
+                android:focusableInTouchMode="true"
+                android:padding="5dp" />
 
+            <Button
+                android:id="@+id/voice_translate_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="0dp"
+                android:singleLine="false"
+                android:text="@string/button_voice_translate"
+                android:textSize="32sp" />
+        </FrameLayout>
 
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="start">
-
-
-        <Spinner
-            android:id="@+id/spinner_target"
-            android:layout_width="128dp"
-            android:layout_height="80dp"
-            android:layout_marginTop="-10dp"
-            android:descendantFocusability="beforeDescendants"
-            android:focusableInTouchMode="true"
-            android:padding="5dp" />
-
-        <Button
-            android:id="@+id/result_explain_button"
+        <TextView
+            android:text="@string/output_text"
+            android:id="@+id/output_text"
+            android:textSize="24sp"
+            android:layout_marginTop="-5dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/button_result_explain"
-            android:textSize="32sp"
-            android:layout_marginStart="135dp"/>
+            android:layout_height="wrap_content" />
 
-        <Button
-            android:id="@+id/finish_app_button"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/output_text_value"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/button_finish_app"
-            android:singleLine="false"
-            android:textSize="32sp"
-            android:layout_gravity="end"
-            android:layout_marginStart="0dp" />
-    </FrameLayout>
-</LinearLayout>
+            android:padding="8dp"
+            android:hint="@string/default_output_text"
+            android:textSize="18sp"
+            android:background="@drawable/text_box_border" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="start">
+
+            <Spinner
+                android:id="@+id/spinner_target"
+                android:layout_width="128dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="-10dp"
+                android:descendantFocusability="beforeDescendants"
+                android:focusableInTouchMode="true"
+                android:padding="5dp" />
+
+            <Button
+                android:id="@+id/result_explain_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/button_result_explain"
+                android:textSize="32sp"
+                android:layout_marginStart="160dp"/>
+
+            <Button
+                android:id="@+id/finish_app_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/button_finish_app"
+                android:singleLine="false"
+                android:textSize="32sp"
+                android:layout_gravity="end"
+                android:layout_marginStart="0dp" />
+        </FrameLayout>
+    </LinearLayout>
+</ScrollView>
