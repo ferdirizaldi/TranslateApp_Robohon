@@ -411,15 +411,11 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
         }
     }
 
-
-    //TASK この関数かもっと奥の翻訳する関数でString targetLanguage = spinner_target.getSelectedItem().toString();で翻訳先言語を入力ボックスから取得し使用する
-    //とか考えていたが、他の部分との兼ね合いで引数にとる必要が生じた
-    //二転三転して申し訳ないが、結局グローバル変数にすることにした。
     /**
      * 翻訳をしてspeakシナリオを開始させる関数
      */
     private void startSpeakScenario(final String original_word){
-        if(original_word.length() > max_length || Objects.equals(original_word,null) || Objects.equals(original_word,"")){
+        if(original_word.length() > max_length || Objects.equals(original_word,"")){
             Log.v(TAG, "Original_word Is Wrong");
             VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_TRANSLATE);//errorシナリオのtranslateトピックを起動する
             return;//original_wordが不正な場合はリターン
@@ -431,7 +427,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
             VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_CONNECTION);//errorシナリオのconnectionトピックを起動する
             return;//translated_wordがエラーメッセージなのでリターン
         }
-        if(translated_word.length() > max_length || Objects.equals(translated_word, null) || Objects.equals(translated_word, "")){
+        if(translated_word.length() > max_length || Objects.equals(translated_word, "")){
             Log.v(TAG, "Translated_word Is Wrong");
             VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_TRANSLATE);//errorシナリオのtranslateトピックを起動する
             return;//translated_wordが不正な場合はリターン
