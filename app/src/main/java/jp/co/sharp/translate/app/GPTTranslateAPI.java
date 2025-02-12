@@ -21,7 +21,7 @@ public class GPTTranslateAPI {
     private static final String API_KEY = BuildConfig.GPT_API_KEY;
     //GPT_API_KEY = "sk-proj-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 
-    public static void translateAsync(final String text, final String targetLanguage, final GPTAPIResultCallback callback) {
+    public static void translateAsync(final String text, final String inputLanguage, final String targetLanguage, final GPTAPIResultCallback callback) {
         new Thread(() -> {
             try {
                 URL url = new URL(API_URL);
@@ -39,7 +39,7 @@ public class GPTTranslateAPI {
                 jsonBody.put("messages", new JSONArray()
                         .put(new JSONObject()
                                 .put("role", "system")
-                                .put("content", "君は通訳者だよ、日本語から " + targetLanguage + "に翻訳してね、意味だけの回答でいいよ。何も追加しないください"))
+                                .put("content", "君は通訳者だよ、" + inputLanguage + "から " + targetLanguage + "に翻訳してね、意味だけの回答でいいよ。何も追加しないください"))
                         .put(new JSONObject()
                                 .put("role", "user")
                                 .put("content", text)));
@@ -67,7 +67,7 @@ public class GPTTranslateAPI {
     }
 
     // Function to request explanation (50-character limit)
-    public static void explainResultAsync(String translatedText, String targetLanguage, GPTAPIResultCallback callback) {
+    public static void explainResultAsync(String translatedText, String inputLanguage, String targetLanguage, GPTAPIResultCallback callback) {
         new Thread(() -> {
             try {
                 URL url = new URL(API_URL);

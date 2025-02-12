@@ -89,7 +89,11 @@ public class ScenarioDefinitions {
     /**
      * 関数名：end_app
      */
-    public static final String FUNC_INITIAL_TARGET = "initial_targetLanguage";
+    public static final String FUNC_SET_TARGET = "set_targetLanguage";
+    /**
+     * 関数名：end_app
+     */
+    public static final String FUNC_SET_INPUT = "set_inputLanguage";
     /**
      * 関数名：end_app
      */
@@ -103,6 +107,10 @@ public class ScenarioDefinitions {
      */
     public static final String FUNC_SPEAKS_RELAY3 = "speaks_relay3";
     /**
+     * 関数名：end_app
+     */
+    public static final String FUNC_SPEAKS_RELAY4 = "speaks_relay4";
+    /**
      * キー：lvcsr_basic
      */
     public static final String KEY_LVCSR_BASIC = "Lvcsr_Basic";
@@ -110,6 +118,10 @@ public class ScenarioDefinitions {
      * キー：targetLanguage
      */
     public static final String KEY_TARGET = "targetLanguage";
+    /**
+     * キー：inputLanguage
+     */
+    public static final String KEY_INPUT = "inputLanguage";
     /**
      * 翻訳前の単語
      */

@@ -53,9 +53,9 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
      */
     private HomeEventReceiver mHomeEventReceiver;
     private String inputLanguage;//翻訳前言語をアクティビティ側でも保存する　シナリオ側ではpメモリのjp.co.sharp.translate.app.inputLanguageに保存される
-    private Spinner inputSpinner;//スピナーの入力をいろんな関数で得るためここで宣言
+    private Spinner inputSpinner;//いろんな関数で触るためここで宣言
     private String targetLanguage;//翻訳先言語をアクティビティ側でも保存する　シナリオ側ではpメモリのjp.co.sharp.translate.app.targetLanguageに保存される
-    private Spinner targetSpinner;//スピナーの入力をいろんな関数で得るためここで宣言
+    private Spinner targetSpinner;//いろんな関数で触るためここで宣言
     private EditText inputTextValue;
     private TextView outputTextValue;
     private final int max_length = 100;//翻訳前後の文の長さの許容限界
@@ -143,11 +143,6 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                     @Override
                     public void run() {
                         inputTextValue.setText("");
-                    }
-                });
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
                         outputTextValue.setText("");
                     }
                 });
@@ -224,12 +219,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
         //Scene有効化.
         VoiceUIManagerUtil.enableScene(mVUIManager, ScenarioDefinitions.SCENE_COMMON);
 
-        //翻訳前の言語の種類を設定 起動時は必ずデフォルトの日本語が設定される
-        inputLanguage = "日本語";
-        int result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_INPUT, inputLanguage);
-
-
-        //アプリ開始時にシナリオのpメモリからtargetLanguageを取得し、そのままアプリ開始時の発話まで行う
+        //アプリ開始時にシナリオのpメモリからtargetLanguageを取得して言語の初期設定を行い、そのまま翻訳言語設定時の発話まで行う
         VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ACCOSTS + ".t1");
 
     }
@@ -298,13 +288,53 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                         Log.v(TAG, "Listen Scenario Sent Empty Text");
                     }
                 }
+
                 if(ScenarioDefinitions.FUNC_END_APP.equals(function)){//endシナリオのend_app関数
                     Log.v(TAG, "Receive End Voice Command heard");
                     finish();//アプリを終了する
                 }
-                if(ScenarioDefinitions.FUNC_INITIAL_TARGET.equals(function)) {//accostsシナリオやtargetLanguageシナリオから呼ばれ、翻訳先言語を設定する
+
+                if(ScenarioDefinitions.FUNC_SET_INPUT.equals(function)) {//inputLanguageシナリオから呼ばれ、翻訳前言語を設定する
+                    //翻訳前言語をString変数に格納
+                    inputLanguage = VoiceUIVariableUtil.getVariableData(variables, ScenarioDefinitions.KEY_INPUT);
+                    Log.v(TAG,"Set InputLanguage:" + inputLanguage);
+
+                    // R.array.languagesの内容をString配列として取得し、UIスレッド内で翻訳先言語ボックスを入力された言語(の番号を検索しその番号)に切り替える
+                    String[] languages = getResources().getStringArray(R.array.inputLanguages);
+                    String finalInputLanguage = inputLanguage;//UIスレッドで使用するためにfinal宣言
+                    runOnUiThread(() -> {
+                        inputSpinner.setSelection(Arrays.asList(languages).indexOf(finalInputLanguage));
+                    });
+
+                    //認識言語を変更する
+                    if(Objects.equals(inputLanguage, "日本語")) {
+                        VoiceUIManagerUtil.setAsr(mVUIManager, Locale.JAPAN);//認識言語の変更
+                    }
+                    if(Objects.equals(inputLanguage, "英語")) {
+                        VoiceUIManagerUtil.setAsr(mVUIManager, Locale.US);//認識言語の変更
+                    }
+                    if(Objects.equals(inputLanguage, "中国語")) {
+                        VoiceUIManagerUtil.setAsr(mVUIManager, Locale.CHINA);//認識言語の変更
+                    }
+                    if(Objects.equals(inputLanguage, "韓国語")) {
+                        VoiceUIManagerUtil.setAsr(mVUIManager, Locale.KOREA);//認識言語の変更
+                    }
+                    //入出力バーを空にする
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            inputTextValue.setText("");
+                            outputTextValue.setText("");
+                        }
+                    });
+
+                    VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ACCOSTS + ".t2");//翻訳先言語の設定へ
+                }
+
+                if(ScenarioDefinitions.FUNC_SET_TARGET.equals(function)) {//accostsシナリオやtargetLanguageシナリオから呼ばれ、翻訳先言語を設定する
                     //翻訳先言語をString変数に格納
                     targetLanguage = VoiceUIVariableUtil.getVariableData(variables, ScenarioDefinitions.KEY_TARGET);
+                    Log.v(TAG,"Set TargetLanguage:" + targetLanguage);
                     if(Objects.equals(targetLanguage, "null")){//設定が無いようならデフォルトの英語にする
                         targetLanguage = "英語";
                         //翻訳先言語をspeakシナリオの手が届くpメモリに送る targetLanguageシナリオでセットメモリーできるならこの処理はif文の中でのみすればよい
@@ -323,14 +353,31 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                         String original_word = inputTextValue.getText().toString().trim();
                         startSpeakScenario(original_word);
                     } else {//入力されていなければ
-                        VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ACCOSTS + ".t2");//翻訳先言語設定時の発話
+                        VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ACCOSTS + ".t3");//翻訳言語設定時の発話
                     }
                 }
+
                 if(ScenarioDefinitions.FUNC_SPEAKS_RELAY1.equals(function)){//speaksシナリオの中継　その1
-                    VoiceUIManagerUtil.setTts(mVUIManager, Locale.JAPAN);//発話言語の変更
+                    //翻訳前の言語を発話するための発話言語の変更
+                    if(Objects.equals(inputLanguage, "日本語")) {
+                        VoiceUIManagerUtil.setTts(mVUIManager, Locale.JAPAN);
+                    }
+                    if(Objects.equals(inputLanguage, "英語")) {
+                        VoiceUIManagerUtil.setTts(mVUIManager, Locale.US);
+                    }
+                    if(Objects.equals(inputLanguage, "中国語")) {
+                        VoiceUIManagerUtil.setTts(mVUIManager, Locale.CHINA);
+                    }
+                    if(Objects.equals(inputLanguage, "韓国語")) {
+                        VoiceUIManagerUtil.setTts(mVUIManager, Locale.KOREA);
+                    }
                     VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAKS + ".t2");
                 }
-                if(ScenarioDefinitions.FUNC_SPEAKS_RELAY2.equals(function)) {//speaksシナリオの中継　その2
+                if(ScenarioDefinitions.FUNC_SPEAKS_RELAY2.equals(function)){//speaksシナリオの中継　その2
+                    VoiceUIManagerUtil.setTts(mVUIManager, Locale.JAPAN);//発話言語の変更
+                    VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAKS + ".t3");
+                }
+                if(ScenarioDefinitions.FUNC_SPEAKS_RELAY3.equals(function)) {//speaksシナリオの中継　その3
                     if(Objects.equals(targetLanguage, "日本語")) {
                         VoiceUIManagerUtil.setTts(mVUIManager, Locale.JAPAN);//発話言語の変更
                     }
@@ -343,11 +390,11 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                     if(Objects.equals(targetLanguage, "韓国語")) {
                         VoiceUIManagerUtil.setTts(mVUIManager, Locale.KOREA);//発話言語の変更
                     }
-                    VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAKS + ".t3");
-                }
-                if(ScenarioDefinitions.FUNC_SPEAKS_RELAY3.equals(function)) {//speaksシナリオの中継　その3
-                    VoiceUIManagerUtil.setTts(mVUIManager, Locale.JAPAN);//発話言語の変更
                     VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAKS + ".t4");
+                }
+                if(ScenarioDefinitions.FUNC_SPEAKS_RELAY4.equals(function)) {//speaksシナリオの中継　その4
+                    VoiceUIManagerUtil.setTts(mVUIManager, Locale.JAPAN);//発話言語の変更
+                    VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAKS + ".t5");
                 }
                 break;
             case VoiceUIListenerImpl.RESOLVE_VARIABLE:
@@ -398,19 +445,6 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
             return;//translated_wordのpメモリへの保存が失敗したらリターン
         }
 
-        //翻訳前の言語を発話するための発話言語の変更
-        if(Objects.equals(inputLanguage, "日本語")) {
-            VoiceUIManagerUtil.setTts(mVUIManager, Locale.JAPAN);
-        }
-        if(Objects.equals(inputLanguage, "英語")) {
-            VoiceUIManagerUtil.setTts(mVUIManager, Locale.US);
-        }
-        if(Objects.equals(inputLanguage, "中国語")) {
-            VoiceUIManagerUtil.setTts(mVUIManager, Locale.CHINA);
-        }
-        if(Objects.equals(inputLanguage, "韓国語")) {
-            VoiceUIManagerUtil.setTts(mVUIManager, Locale.KOREA);
-        }
         result = VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAKS + ".t1");//speakシナリオを起動する
         //startExplainScenario(translated_word);
         if(Objects.equals(result,VoiceUIManager.VOICEUI_ERROR)){
@@ -482,7 +516,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
     private void translate(String original_word, GPTAPIResultCallback callback) {
 
         // 非同期の関数を呼び出し
-        GPTTranslateAPI.translateAsync(original_word, targetLanguage, new GPTTranslateAPI.GPTAPIResultCallback() {
+        GPTTranslateAPI.translateAsync(original_word, inputLanguage, targetLanguage, new GPTTranslateAPI.GPTAPIResultCallback() {
             @Override
             public void onSuccess(String translatedText) {
                 // Pass the translated text to the callback
@@ -519,7 +553,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
     private void explain(String translated_word, GPTAPIResultCallback callback) {
 
         // 非同期の関数を呼び出し
-        GPTTranslateAPI.explainResultAsync(translated_word, targetLanguage, new GPTTranslateAPI.GPTAPIResultCallback() {
+        GPTTranslateAPI.explainResultAsync(translated_word, inputLanguage, targetLanguage, new GPTTranslateAPI.GPTAPIResultCallback() {
             @Override
             public void onSuccess(String translatedText) {
                 // Pass the translated text to the callback
