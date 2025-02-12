@@ -298,6 +298,10 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                         Log.v(TAG, "Listen Scenario Sent Empty Text");
                     }
                 }
+                if(ScenarioDefinitions.FUNC_EXPLAIN_WORD.equals(function)){
+                    startExplainScenario(String.valueOf(outputTextValue.getText().toString()));
+                }
+
                 if(ScenarioDefinitions.FUNC_END_APP.equals(function)){//endシナリオのend_app関数
                     Log.v(TAG, "Receive End Voice Command heard");
                     finish();//アプリを終了する

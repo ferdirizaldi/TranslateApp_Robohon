@@ -5,8 +5,12 @@
         <description>言葉を聞き取りアプリに送るシナリオ</description>
         <scene value="jp.co.sharp.translate.app.scene_common"/>
         <version value="1.0"/>
+
+
         <situation priority="76" topic_id="t1" trigger="user-word">ＶＯＩＣＥＰＦ＿ＥＲＲ outof ${Lvcsr:Basic}</situation>
+        <situation priority="77" topic_id="t2" trigger="user-word">${Lvcsr:Basic} include [説明,せつめい,せちめい,説明して]</situation>
     </head>
+
     <body>
         <topic id="t1" listen="false">
             <action index="1">
@@ -15,6 +19,18 @@
             </action>
             <action index="2">
                 <control function="send_word" target="jp.co.sharp.translate.app">
+                    <data key="Lvcsr_Basic" value="${Lvcsr:Basic}"/>
+                </control>
+            </action>
+        </topic>
+
+        <!-- Topic t2: Explanation request processing -->
+        <topic id="t2" listen="false">
+            <action index="1">
+                <speech>${resolver:speech_explain(${resolver:explain_id})}</speech>
+            </action>
+            <action index="2">
+                <control function="send_explain" target="jp.co.sharp.translate.app">
                     <data key="Lvcsr_Basic" value="${Lvcsr:Basic}"/>
                 </control>
             </action>

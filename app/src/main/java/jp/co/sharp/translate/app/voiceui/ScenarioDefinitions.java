@@ -83,6 +83,10 @@ public class ScenarioDefinitions {
      */
     public static final String FUNC_SEND_WORD = "send_word";
     /**
+     * 関数名：send_word
+     */
+    public static final String FUNC_EXPLAIN_WORD = "send_explain";
+    /**
      * 関数名：end_app
      */
     public static final String FUNC_END_APP = "end_app";
