@@ -15,7 +15,14 @@
     <string name="default_output_text">翻訳結果</string>
     <string name="default_input_text">入力単語</string>
     <string name="button_result_explain">説明</string>
+    <string-array name="inputLanguages">
+        <item>日本語</item>
+        <item>英語</item>
+        <item>中国語</item>
+        <item>韓国語</item>
+    </string-array>
     <string-array name="targetLanguages">
+        <item>日本語</item>
         <item>英語</item>
         <item>中国語</item>
         <item>韓国語</item>

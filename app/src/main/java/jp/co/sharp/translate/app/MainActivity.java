@@ -52,9 +52,10 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
      * ホームボタンイベント検知.
      */
     private HomeEventReceiver mHomeEventReceiver;
-    private Spinner targetSpinner;//スピナーの入力をいろんな関数で得るためここで宣言
-    private String targetLanguage;//翻訳先言語をアクティビティ側でも保存する　シナリオ側ではpメモリのjp.co.sharp.translate.app.targetLanguageに保存される
     private String inputLanguage;//翻訳前言語をアクティビティ側でも保存する　シナリオ側ではpメモリのjp.co.sharp.translate.app.inputLanguageに保存される
+    private Spinner inputSpinner;//スピナーの入力をいろんな関数で得るためここで宣言
+    private String targetLanguage;//翻訳先言語をアクティビティ側でも保存する　シナリオ側ではpメモリのjp.co.sharp.translate.app.targetLanguageに保存される
+    private Spinner targetSpinner;//スピナーの入力をいろんな関数で得るためここで宣言
     private EditText inputTextValue;
     private TextView outputTextValue;
     private final int max_length = 100;//翻訳前後の文の長さの許容限界
@@ -107,11 +108,50 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
             finish();
         });
 
+        //入力側の言語切り替えボックスを作成し、対応言語一覧をセット
+        inputSpinner = (Spinner) findViewById(R.id.spinner_input);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.inputLanguages, R.layout.spinner_layout);
+        adapter.setDropDownViewResource(R.layout.spinner_layout);
+        inputSpinner.setAdapter(adapter);
+        // リスナーを登録
+        inputSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+            //　アイテムが選択された時
+            @Override
+            public void onItemSelected(AdapterView<?> parent,
+                                       View view, int position, long id) {
+                Spinner spinner = (Spinner)parent;
+                String item = (String)spinner.getSelectedItem();
+                //翻訳前言語をjavaで使えるよう格納する
+                inputLanguage = item;
+                //翻訳前言語をspeakシナリオの手が届くpメモリに送る
+                int result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_INPUT, item);
+                //認識言語を変更する
+                if(Objects.equals(inputLanguage, "日本語")) {
+                    VoiceUIManagerUtil.setAsr(mVUIManager, Locale.JAPAN);//認識言語の変更
+                }
+                if(Objects.equals(inputLanguage, "英語")) {
+                    VoiceUIManagerUtil.setAsr(mVUIManager, Locale.US);//認識言語の変更
+                }
+                if(Objects.equals(inputLanguage, "中国語")) {
+                    VoiceUIManagerUtil.setAsr(mVUIManager, Locale.CHINA);//認識言語の変更
+                }
+                if(Objects.equals(inputLanguage, "韓国語")) {
+                    VoiceUIManagerUtil.setAsr(mVUIManager, Locale.KOREA);//認識言語の変更
+                }
+            }
+
+            //　アイテムが選択されなかった
+            public void onNothingSelected(AdapterView<?> parent) {
+                //何もしない
+            }
+        });
+
+
         //出力側の言語切り替えボックスを作成し、対応言語一覧をセット
         targetSpinner = (Spinner) findViewById(R.id.spinner_target);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.targetLanguages, R.layout.spinner_layout);
-        adapter.setDropDownViewResource(R.layout.spinner_layout);
-        targetSpinner.setAdapter(adapter);
+        ArrayAdapter<CharSequence> adapter2 = ArrayAdapter.createFromResource(this, R.array.targetLanguages, R.layout.spinner_layout);
+        adapter2.setDropDownViewResource(R.layout.spinner_layout);
+        targetSpinner.setAdapter(adapter2);
         // リスナーを登録
         targetSpinner.setOnItemSelectedListener(new OnItemSelectedListener() {
             //　アイテムが選択された時
@@ -164,10 +204,10 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
         //Scene有効化.
         VoiceUIManagerUtil.enableScene(mVUIManager, ScenarioDefinitions.SCENE_COMMON);
 
-        //翻訳前の言語の種類を設定
+        //翻訳前の言語の種類を設定 起動時は必ずデフォルトの日本語が設定される
         inputLanguage = "日本語";
         int result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_INPUT, inputLanguage);
-        VoiceUIManagerUtil.setAsr(mVUIManager, Locale.JAPAN);//認識言語の変更
+
 
         //アプリ開始時にシナリオのpメモリからtargetLanguageを取得し、そのままアプリ開始時の発話まで行う
         VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ACCOSTS + ".t1");
@@ -266,8 +306,14 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                         VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ACCOSTS + ".t2");//翻訳先言語設定時の発話
                     }
                 }
-                if(ScenarioDefinitions.FUNC_ACCOST_SPECIAL.equals(function)){//speaksシナリオの中継　その1
-                    targetLanguage = VoiceUIVariableUtil.getVariableData(variables, ScenarioDefinitions.KEY_TARGET);
+                if(ScenarioDefinitions.FUNC_SPEAKS_RELAY1.equals(function)){//speaksシナリオの中継　その1
+                    VoiceUIManagerUtil.setTts(mVUIManager, Locale.JAPAN);//発話言語の変更
+                    VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAKS + ".t2");
+                }
+                if(ScenarioDefinitions.FUNC_SPEAKS_RELAY2.equals(function)) {//speaksシナリオの中継　その2
+                    if(Objects.equals(targetLanguage, "日本語")) {
+                        VoiceUIManagerUtil.setTts(mVUIManager, Locale.JAPAN);//発話言語の変更
+                    }
                     if(Objects.equals(targetLanguage, "英語")) {
                         VoiceUIManagerUtil.setTts(mVUIManager, Locale.US);//発話言語の変更
                     }
@@ -277,11 +323,11 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                     if(Objects.equals(targetLanguage, "韓国語")) {
                         VoiceUIManagerUtil.setTts(mVUIManager, Locale.KOREA);//発話言語の変更
                     }
-                    VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAKS + ".t2");
-                }
-                if(ScenarioDefinitions.FUNC_ACCOST_DEFAULT.equals(function)) {//speaksシナリオの中継　その2
-                    VoiceUIManagerUtil.setTts(mVUIManager, Locale.JAPAN);//発話言語の変更
                     VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAKS + ".t3");
+                }
+                if(ScenarioDefinitions.FUNC_SPEAKS_RELAY3.equals(function)) {//speaksシナリオの中継　その3
+                    VoiceUIManagerUtil.setTts(mVUIManager, Locale.JAPAN);//発話言語の変更
+                    VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAKS + ".t4");
                 }
                 break;
             case VoiceUIListenerImpl.RESOLVE_VARIABLE:
@@ -332,6 +378,19 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
             return;//translated_wordのpメモリへの保存が失敗したらリターン
         }
 
+        //翻訳前の言語を発話するための発話言語の変更
+        if(Objects.equals(inputLanguage, "日本語")) {
+            VoiceUIManagerUtil.setTts(mVUIManager, Locale.JAPAN);
+        }
+        if(Objects.equals(inputLanguage, "英語")) {
+            VoiceUIManagerUtil.setTts(mVUIManager, Locale.US);
+        }
+        if(Objects.equals(inputLanguage, "中国語")) {
+            VoiceUIManagerUtil.setTts(mVUIManager, Locale.CHINA);
+        }
+        if(Objects.equals(inputLanguage, "韓国語")) {
+            VoiceUIManagerUtil.setTts(mVUIManager, Locale.KOREA);
+        }
         result = VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAKS + ".t1");//speakシナリオを起動する
         //startExplainScenario(translated_word);
         if(Objects.equals(result,VoiceUIManager.VOICEUI_ERROR)){

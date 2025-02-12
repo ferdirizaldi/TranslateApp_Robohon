@@ -5,7 +5,8 @@
     <description>アプリを終了するためのシナリオ</description>
     <scene value="jp.co.sharp.translate.app.scene_common"/>
     <version value="1.0"/>
-    <situation priority="72" topic_id="t1" trigger="user-word">${Lvcsr:Basic} include [終了,終わ,やめ]</situation>
+    <situation priority="72" topic_id="t1" trigger="user-word">${Lvcsr:Basic} include [終了,終わ,やめ,close,exit,end,关闭,退出,종료]</situation>
+    <!--关闭(Guānbì):「閉じる」「終了する」、退出(Tuìchū):「退出する」「離脱する」、종료(Jongryo):「終了」-->
     <accost priority="72" topic_id="t2" word="jp.co.sharp.translate.app.end"/>
 </head>
 <body>

@@ -32,6 +32,15 @@
         android:orientation="horizontal"
         android:gravity="start">
 
+        <Spinner
+            android:id="@+id/spinner_input"
+            android:layout_width="128dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="-10dp"
+            android:descendantFocusability="beforeDescendants"
+            android:focusableInTouchMode="true"
+            android:padding="5dp" />
+
         <Button
             android:id="@+id/voice_translate_button"
             android:layout_width="wrap_content"

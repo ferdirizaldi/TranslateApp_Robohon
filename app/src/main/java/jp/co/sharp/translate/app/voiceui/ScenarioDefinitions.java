@@ -93,12 +93,15 @@ public class ScenarioDefinitions {
     /**
      * 関数名：end_app
      */
-    public static final String FUNC_ACCOST_SPECIAL = "accost_special";
+    public static final String FUNC_SPEAKS_RELAY1 = "speaks_relay1";
     /**
      * 関数名：end_app
      */
-    public static final String FUNC_ACCOST_DEFAULT = "accost_default";
-
+    public static final String FUNC_SPEAKS_RELAY2 = "speaks_relay2";
+    /**
+     * 関数名：end_app
+     */
+    public static final String FUNC_SPEAKS_RELAY3 = "speaks_relay3";
     /**
      * キー：lvcsr_basic
      */
