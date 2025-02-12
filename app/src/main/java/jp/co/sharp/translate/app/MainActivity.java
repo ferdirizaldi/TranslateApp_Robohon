@@ -483,7 +483,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
 
         int result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_EXPLAIN_WORDS, explanation_words);//説明文章
         if(Objects.equals(result,VoiceUIManager.VOICEUI_ERROR)){
-            Log.v(TAG, "Explaination word is error");
+            Log.v(TAG, "Explanation word is error");
             VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_TRANSLATE);//errorシナリオのtranslateトピックを起動する
             return;//translated_wordのpメモリへの保存が失敗したらリターン
         }
