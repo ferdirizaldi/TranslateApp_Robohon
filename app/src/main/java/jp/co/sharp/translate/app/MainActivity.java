@@ -95,7 +95,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
         resultExpainButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startExplainScenario(String.valueOf(outputTextValue.getText().toString()));
+                startExplainScenario(outputTextValue.getText().toString());
             }
         });
 
@@ -290,7 +290,8 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                 }
 
                 if(ScenarioDefinitions.FUNC_EXPLAIN_WORD.equals(function)){
-                    startExplainScenario(String.valueOf(outputTextValue.getText().toString()));
+                    String translated_word = outputTextValue.getText().toString();
+                    startExplainScenario(translated_word);
                 }
 
                 if(ScenarioDefinitions.FUNC_END_APP.equals(function)){//endシナリオのend_app関数
@@ -483,13 +484,21 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
             VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_CONNECTION);//errorシナリオのconnectionトピックを起動する
             return;//explanation_wordsがエラーメッセージなのでリターン
         }
-        if(Objects.equals(explanation_words, null) || explanation_words.length() > max_length || Objects.equals(explanation_words,"")){
+
+        int result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_EXPLAIN_WORDS, explanation_words);//説明文章
+        if(Objects.equals(result,VoiceUIManager.VOICEUI_ERROR)){
+            Log.v(TAG, "Explaination word is error");
+            VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_TRANSLATE);//errorシナリオのtranslateトピックを起動する
+            return;//translated_wordのpメモリへの保存が失敗したらリターン
+        }
+
+        if(Objects.equals(explanation_words, null) || Objects.equals(explanation_words,"")){
             Log.v(TAG, "explanation_words Is Wrong");
             VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_EXPLAIN);//errorシナリオのtranslateトピックを起動する
             return;//explanation_wordが不正な場合はリターン
         }
 
-        int result = VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAK_EXPLANATION);//speak_explanationシナリオを起動する
+        result = VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAK_EXPLANATION);//speak_explanationシナリオを起動する
         if(Objects.equals(result,VoiceUIManager.VOICEUI_ERROR)){
             Log.v(TAG, "Speak Explanation Scenario Failed To Start");
             VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_EXPLAIN);//errorシナリオのtranslateトピックを起動する
