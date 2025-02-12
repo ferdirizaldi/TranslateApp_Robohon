@@ -138,6 +138,19 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                 if(Objects.equals(inputLanguage, "韓国語")) {
                     VoiceUIManagerUtil.setAsr(mVUIManager, Locale.KOREA);//認識言語の変更
                 }
+                //入出力バーを空にする
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        inputTextValue.setText("");
+                    }
+                });
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        outputTextValue.setText("");
+                    }
+                });
             }
 
             //　アイテムが選択されなかった
@@ -164,6 +177,13 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                 targetLanguage = item;
                 //翻訳先言語をspeakシナリオの手が届くpメモリに送る
                 int result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_TARGET, item);
+                //出力バーを空にする
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        outputTextValue.setText("");
+                    }
+                });
             }
 
             //　アイテムが選択されなかった
