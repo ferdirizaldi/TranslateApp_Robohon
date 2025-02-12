@@ -5,10 +5,10 @@
         <description>翻訳先言語切り替えコマンドを聞き取りアプリに送るシナリオ</description>
         <scene value="jp.co.sharp.translate.app.scene_common"/>
         <version value="1.0"/>
-        <situation priority="74" topic_id="日本語" trigger="user-word">${Lvcsr:Basic} include [日本語に,ほんごに,日本語で,ほんごで]</situation>
-        <situation priority="74" topic_id="英語" trigger="user-word">${Lvcsr:Basic} include [英語に,いごに,英語で,いごで]</situation>
-        <situation priority="74" topic_id="中国語" trigger="user-word">${Lvcsr:Basic} include [中国語に,うごくごに,中国語で,うごくごで]</situation>
-        <situation priority="74" topic_id="韓国語" trigger="user-word">${Lvcsr:Basic} include [韓国語に,んこくごに,韓国語で,んこくごで]</situation>
+        <situation priority="73" topic_id="日本語" trigger="user-word">${Lvcsr:Basic} include [日本語に,ほんごに,日本語で,ほんごで]</situation>
+        <situation priority="73" topic_id="英語" trigger="user-word">${Lvcsr:Basic} include [英語に,いごに,英語で,いごで]</situation>
+        <situation priority="73" topic_id="中国語" trigger="user-word">${Lvcsr:Basic} include [中国語に,うごくごに,中国語で,うごくごで]</situation>
+        <situation priority="73" topic_id="韓国語" trigger="user-word">${Lvcsr:Basic} include [韓国語に,んこくごに,韓国語で,んこくごで]</situation>
         <!--入力言語が日本語以外の時はinputTargetシナリオとの衝突を避けるためこのシナリオは起動しない-->
     </head>
     <body>
