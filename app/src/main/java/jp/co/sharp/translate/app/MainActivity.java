@@ -288,6 +288,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                         Log.v(TAG, "Listen Scenario Sent Empty Text");
                     }
                 }
+                
                 if(ScenarioDefinitions.FUNC_EXPLAIN_WORD.equals(function)){
                     startExplainScenario(String.valueOf(outputTextValue.getText().toString()));
                 }
