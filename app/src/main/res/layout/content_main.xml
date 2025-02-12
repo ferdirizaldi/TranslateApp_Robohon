@@ -21,7 +21,7 @@
         android:id="@+id/input_text_value"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="単語を入力してください"
+        android:hint="@string/default_input_text"
         android:textSize="18sp"
         android:padding="8dp"
         android:background="@drawable/text_box_border" />
@@ -65,7 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:text="@string/default_output_text"
+        android:hint="@string/default_output_text"
         android:textSize="18sp"
         android:background="@drawable/text_box_border" />
 

@@ -13,7 +13,7 @@
     <string name="output_text">出力単語</string>
     <string name="button_voice_translate">翻訳</string>
     <string name="default_output_text">翻訳結果</string>
-    <string name="default_input_text">入力単語</string>
+    <string name="default_input_text">単語を入力してください</string>
     <string name="button_result_explain">説明</string>
     <string-array name="inputLanguages">
         <item>日本語</item>
