@@ -84,12 +84,14 @@ public class GPTTranslateAPI {
                 jsonBody.put("messages", new JSONArray()
                         .put(new JSONObject()
                                 .put("role", "user")
-                                .put("content", translatedText + "は言語的の意味はなんですか、50文字で説明してください," +
-                                        "回答文章は子供向けのロボット（ロボホン）が生成したようなな文章にしてください" +
-                                        "単語の意味もちゃんと教えてください。" + translatedText + "の" +
-                                        "日本語で説明文章だけ書いてください" +
-                                        "普通形で「です」と「ます」を使用しない" +
-                                        "辞書形の文章で、フレンドリー")));
+                                .put("content", String.format(
+                                        "%sの意味を50文字以内で説明してください。\n" +
+                                                "回答は子供向けのロボット（ロボホン）が話すような文体にしてください。\n" +
+                                                "単語の意味もわかりやすく教えてください。\n" +
+                                                "%sの日本語での説明文のみを出力してください。\n" +
+                                                "普通形（です・ますを使用しない）で辞書形のフレンドリーな文章にしてください。",
+                                        translatedText, translatedText
+                                ))));
 
                 jsonBody.put("max_tokens", 100);
 
