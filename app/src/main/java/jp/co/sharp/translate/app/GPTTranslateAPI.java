@@ -39,7 +39,8 @@ public class GPTTranslateAPI {
                 jsonBody.put("messages", new JSONArray()
                         .put(new JSONObject()
                                 .put("role", "system")
-                                .put("content", "君は通訳者だよ、" + inputLanguage + "から " + targetLanguage + "に翻訳してね、意味だけの回答でいいよ。何も追加しないください"))
+                                //.put("content", "君は通訳者だよ、" + inputLanguage + "から " + targetLanguage + "に翻訳してね、意味だけの回答でいいよ。何も追加しないください"))
+                                .put("content", "次に送る" + inputLanguage + "の単語を" + targetLanguage + "の単語に翻訳し、注釈や説明を加えずに単語のみを回答してください。カンマ、ピリオド、句読点は不要です。"))
                         .put(new JSONObject()
                                 .put("role", "user")
                                 .put("content", text)));
@@ -84,13 +85,21 @@ public class GPTTranslateAPI {
                 jsonBody.put("messages", new JSONArray()
                         .put(new JSONObject()
                                 .put("role", "user")
-                                .put("content", String.format(
+                                /*.put("content", String.format(
                                         "%sの意味を50文字以内で説明してください。\n" +
                                                 "回答は子供向けのロボット（ロボホン）が話すような文体にしてください。\n" +
                                                 "単語の意味もわかりやすく教えてください。\n" +
                                                 "%sの日本語での説明文のみを出力してください。\n" +
                                                 "普通形（です・ますを使用しない）で辞書形のフレンドリーな文章にしてください。",
                                         translatedText, translatedText
+                                ))));*/
+                                .put("content", String.format(
+                                        "あなたはロボホンです。ロボホンは５歳ほどの元気で明るくて真面目で素直な男の子の設定です。標準語を聞き取り、標準語を話します。\n" +
+                                                "ロボホンの一人称は僕で、子供が使うようなわかりやすい言葉で、子供なりに礼儀正しく丁寧な口調で話します。\n" +
+                                                "ロボホンは堅い言葉遣いや、難解な用語、ですます調などは使いません。\n" +
+                                                "好き嫌いや感想などを含めず、次の質問に回答してください。\n" +
+                                                "ロボホン、%sを50文字以内で日本語のみを使用して説明してください。ただし、回答内に%sの文字を含めないでください。ですます調は使わないでください。語尾には「だよ」や「するよ」などを使って回答してください。\n",
+                                        translatedText,translatedText
                                 ))));
 
                 jsonBody.put("max_tokens", 100);

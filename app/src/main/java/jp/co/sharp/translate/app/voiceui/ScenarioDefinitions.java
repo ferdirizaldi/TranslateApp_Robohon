@@ -59,7 +59,7 @@ public class ScenarioDefinitions {
     /**
      * シナリオ：speakシナリオ
      */
-    public static final String ACC_SPEAK_EXPLANATION =  ScenarioDefinitions.PACKAGE + ".speak_explanation";
+    public static final String ACC_SPEAK_EXPLANATION =  ScenarioDefinitions.PACKAGE + ".speak_explanation.t1";
     /**
      * シナリオ名：listenシナリオ
      */
@@ -104,14 +104,6 @@ public class ScenarioDefinitions {
      * 関数名：end_app
      */
     public static final String FUNC_CHANGE_LANGUAGE = "change_language";
-    /**
-     * 関数名：end_app
-     */
-    public static final String FUNC_SWITCH_LANGUAGE_TO_TARGET = "change_lang_to_target";
-    /**
-     * 関数名：end_app
-     */
-    public static final String FUNC_SWITCH_BACK_TO_JP = "change_lang_to_jp";
     /**
      * キー：lvcsr_basic
      */
