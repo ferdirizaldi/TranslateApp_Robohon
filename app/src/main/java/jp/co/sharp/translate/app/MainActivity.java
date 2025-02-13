@@ -115,7 +115,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
         inputTextValue = (EditText) findViewById(R.id.input_text_value);
         outputTextValue = (TextView) findViewById(R.id.output_text_value);
 
-        inputTextValue.addTextChangedListener(new TextWatcher() {
+        inputTextValue.addTextChangedListener(new TextWatcher() {//テキスト入力ボックスの変更を検知する
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 // テキスト変更前に呼び出されます
@@ -131,11 +131,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                 // テキスト変更後に呼び出されます
                 String newText = s.toString();
                 // ここで新しいテキストの内容を検知し、必要な処理を行います
-                if(Objects.equals(newText, "")){//テキストボックスが空なら
-                    voiceTranslateButton.setEnabled(false);//使用不可にする
-                }else{//テキストボックスに何か入力されていれば
-                    voiceTranslateButton.setEnabled(true);//使用可能にする
-                }
+                voiceTranslateButton.setEnabled(!Objects.equals(newText, ""));//テキストボックスが空なら使用不可に、何か入力されていれば使用可能にする
             }
         });
 
