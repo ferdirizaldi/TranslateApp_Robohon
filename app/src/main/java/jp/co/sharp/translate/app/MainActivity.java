@@ -379,21 +379,10 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                     VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAKS + ".t5");
                 }
                 if(ScenarioDefinitions.FUNC_SWITCH_LANGUAGE_TO_TARGET.equals(function)){
-                    if(Objects.equals(targetLanguage, "日本語")) {
-                        VoiceUIManagerUtil.setTts(mVUIManager, Locale.JAPAN);//発話言語の変更
-                    }
-                    if(Objects.equals(targetLanguage, "英語")) {
-                        VoiceUIManagerUtil.setTts(mVUIManager, Locale.US);//発話言語の変更
-                    }
-                    if(Objects.equals(targetLanguage, "中国語")) {
-                        VoiceUIManagerUtil.setTts(mVUIManager, Locale.CHINA);//発話言語の変更
-                    }
-                    if(Objects.equals(targetLanguage, "韓国語")) {
-                        VoiceUIManagerUtil.setTts(mVUIManager, Locale.KOREA);//発話言語の変更
-                    }
+                    setLanguageTts(targetLanguage);
                 }
                 if(ScenarioDefinitions.FUNC_SWITCH_BACK_TO_JP.equals(function)) {//speaksシナリオの中継　その4
-                    VoiceUIManagerUtil.setTts(mVUIManager, Locale.JAPAN);//発話言語の変更
+                    setLanguageTts("日本語");//発話言語の変更
                 }
 
                 break;
