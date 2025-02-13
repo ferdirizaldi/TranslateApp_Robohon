@@ -5,20 +5,30 @@
         <description>英単語を発話するシナリオ</description>
         <scene value="jp.co.sharp.translate.app.scene_common"/>
         <version value="1.0"/>
-        <accost priority="73" topic_id="t1" word="jp.co.sharp.translate.app.speak_explanation"/>
+        <accost priority="73" topic_id="t1" word="jp.co.sharp.translate.app.speak_explanation.t1"/>
     </head>
     <body>
         <topic id="t1" listen="false">
             <action index="1">
-                <control function="change_lang_to_target" target="jp.co.sharp.translate.app"/>
+                <control function="change_language" target="jp.co.sharp.translate.app">
+                    <data key="language" value="${memory_p:jp.co.sharp.translate.app.targetLanguage}"/>
+                    <data key="scenario" value="jp.co.sharp.translate.app.speak_explanation.t2"/>
+                </control>
             </action>
+        </topic>
+        <topic id="t2" listen="false">
             <action index="2">
                 <speech>${memory_p:jp.co.sharp.translate.app.translated_word}</speech>
                 <behavior id="assign" type="normal"/>
             </action>
-            <action index="2">
-                <control function="change_lang_to_jp" target="jp.co.sharp.translate.app"/>
+            <action index="1">
+                <control function="change_language" target="jp.co.sharp.translate.app">
+                    <data key="language" value="日本語"/>
+                    <data key="scenario" value="jp.co.sharp.translate.app.speaks.t3"/>
+                </control>
             </action>
+        </topic>
+        <topic id="t3" listen="false">
             <action index="2">
                 <speech>を日本語で説明するね！${memory_p:jp.co.sharp.translate.app.explanation_words}</speech>
                 <behavior id="assign" type="normal"/>
