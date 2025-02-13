@@ -61,10 +61,6 @@ public class ScenarioDefinitions {
      */
     public static final String ACC_SPEAK_EXPLANATION =  ScenarioDefinitions.PACKAGE + ".speak_explanation";
     /**
-     * シナリオ名：listenシナリオ
-     */
-    public static final String ACC_LISTEN =  ScenarioDefinitions.PACKAGE + ".listen";
-    /**
      * シナリオ名：errorシナリオのconnectionトピック
      */
     public static final String ACC_ERROR_CONNECTION =  ScenarioDefinitions.PACKAGE + ".error_connection";
