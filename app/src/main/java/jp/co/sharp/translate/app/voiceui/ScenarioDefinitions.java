@@ -59,7 +59,7 @@ public class ScenarioDefinitions {
     /**
      * シナリオ：speakシナリオ
      */
-    public static final String ACC_SPEAK_EXPLANATION =  ScenarioDefinitions.PACKAGE + ".speak_explanation.t1";
+    public static final String ACC_SPEAK_EXPLANATION =  ScenarioDefinitions.PACKAGE + ".speak_explanation";
     /**
      * シナリオ名：listenシナリオ
      */

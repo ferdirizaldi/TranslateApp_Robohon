@@ -512,7 +512,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
             return;//translated_wordのpメモリへの保存が失敗したらリターン
         }
 
-        result = VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAK_EXPLANATION);//speak_explanationシナリオを起動する
+        result = VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAK_EXPLANATION + ".t1");//speak_explanationシナリオを起動する
         if(Objects.equals(result,VoiceUIManager.VOICEUI_ERROR)){
             Log.v(TAG, "Speak Explanation Scenario Failed To Start");
             VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_EXPLAIN);//errorシナリオのtranslateトピックを起動する
