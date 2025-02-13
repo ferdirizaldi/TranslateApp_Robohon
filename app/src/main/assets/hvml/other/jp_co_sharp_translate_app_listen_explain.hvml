@@ -13,6 +13,10 @@
                 <speech>${resolver:speech_ok(${resolver:ok_id})}</speech>
                 <behavior id="${resolver:motion_ok(${resolver:ok_id})}" type="normal"/>
             </action>
+            <action index="2">
+                <control function="send_explain" target="jp.co.sharp.translate.app">
+                </control>
+            </action>
         </topic>
     </body>
 </hvml>
