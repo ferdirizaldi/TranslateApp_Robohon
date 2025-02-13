@@ -370,13 +370,6 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                 }
 
 
-                if(ScenarioDefinitions.FUNC_SWITCH_LANGUAGE_TO_TARGET.equals(function)){
-                    setLanguageTts(targetLanguage);
-                }
-                if(ScenarioDefinitions.FUNC_SWITCH_BACK_TO_JP.equals(function)) {//speaksシナリオの中継　その4
-                    setLanguageTts("日本語");//発話言語の変更
-                }
-
                 break;
             case VoiceUIListenerImpl.RESOLVE_VARIABLE:
             case VoiceUIListenerImpl.ACTION_START:
