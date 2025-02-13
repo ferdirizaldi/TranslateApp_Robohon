@@ -441,6 +441,12 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
      * 翻訳をしてspeakシナリオを開始させる関数
      */
     private void startSpeakScenario(final String original_word){
+        if(Objects.equals(inputLanguage, targetLanguage)){//翻訳前言語と翻訳先言語が同じなら
+            Log.v(TAG, "InputLanguage And TargetLanguage Is The Same");
+            VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_SAME);//errorシナリオのsameトピックを起動する
+            return;
+        }
+
         if(original_word.length() > max_length || Objects.equals(original_word,"")){
             Log.v(TAG, "Original_word Is Wrong");
             VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_ERROR_TRANSLATE);//errorシナリオのtranslateトピックを起動する

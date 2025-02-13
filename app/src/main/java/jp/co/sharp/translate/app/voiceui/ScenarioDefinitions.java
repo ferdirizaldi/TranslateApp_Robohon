@@ -72,12 +72,14 @@ public class ScenarioDefinitions {
      * シナリオ名：errorシナリオのtranslateトピック
      */
     public static final String ACC_ERROR_TRANSLATE =  ScenarioDefinitions.PACKAGE + ".error_translate";
-
     /**
      * シナリオ名：errorシナリオのtranslateトピック
      */
     public static final String ACC_ERROR_EXPLAIN =  ScenarioDefinitions.PACKAGE + ".error_explain";
-
+    /**
+     * シナリオ名：errorシナリオのtranslateトピック
+     */
+    public static final String ACC_ERROR_SAME =  ScenarioDefinitions.PACKAGE + ".error_same";
     /**
      * 関数名：send_word
      */
