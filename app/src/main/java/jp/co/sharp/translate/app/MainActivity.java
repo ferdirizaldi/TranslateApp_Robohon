@@ -323,7 +323,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                     Log.v(TAG,"Set InputLanguage:" + inputLanguage);
 
                     // R.array.languagesの内容をString配列として取得し、UIスレッド内で翻訳先言語ボックスを入力された言語(の番号を検索しその番号)に切り替える
-                    setSpinner(inputLanguage,R.array.inputLanguages);
+                    setSpinner(inputSpinner,inputLanguage,R.array.inputLanguages);
 
                     //認識言語を変更する
                     setLanguageAsr(inputLanguage);
@@ -351,7 +351,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                     }
 
                     // R.array.languagesの内容をString配列として取得し、UIスレッド内で翻訳先言語ボックスを入力された言語(の番号を検索しその番号)に切り替える
-                    setSpinner(targetLanguage,R.array.targetLanguages);
+                    setSpinner(targetSpinner,targetLanguage,R.array.targetLanguages);
 
                     if (!inputTextValue.getText().toString().trim().equals("")) {//入力バーに単語が入力済みなら
                         //入力テキストを取得しspeakシナリオへ
@@ -388,11 +388,11 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
     }
 
     // R.array.languagesの内容をString配列として取得し、UIスレッド内で翻訳先言語ボックスを入力された言語(の番号を検索しその番号)に切り替える
-    private void setSpinner(final String language, final int RArray){
+    private void setSpinner(final Spinner spinner, final String language, final int RArray){
 
         final String[] languages = getResources().getStringArray(RArray);
         runOnUiThread(() -> {
-            targetSpinner.setSelection(Arrays.asList(languages).indexOf(language));
+            spinner.setSelection(Arrays.asList(languages).indexOf(language));
         });
 
     }
