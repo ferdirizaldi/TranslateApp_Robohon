@@ -78,7 +78,8 @@
                 android:layout_marginStart="134dp"
                 android:singleLine="false"
                 android:text="@string/button_voice_translate"
-                android:textSize="32sp" />
+                android:textSize="32sp"
+                android:alpha="1.00"/>
         </FrameLayout>
 
         <TextView
@@ -103,7 +104,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/button_result_explain"
                 android:textSize="32sp"
-                android:layout_marginStart="0dp"/>
+                android:layout_marginStart="0dp"
+                android:alpha="1.00"/>
 
             <Button
                 android:id="@+id/finish_app_button"
