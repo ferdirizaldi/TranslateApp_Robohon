@@ -5,7 +5,7 @@
         <description>英単語を発話するシナリオ</description>
         <scene value="jp.co.sharp.translate.app.scene_common"/>
         <version value="1.0"/>
-        <accost priority="73" topic_id="t1" word="jp.co.sharp.translate.app.speak_explanation.t1"/>
+        <accost priority="73" topic_id="t1" word="jp.co.sharp.translate.app.speakExplanation.t1"/>
     </head>
     <body>
         <topic id="t1" listen="false">
