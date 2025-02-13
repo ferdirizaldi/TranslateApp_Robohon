@@ -115,6 +115,14 @@ public class ScenarioDefinitions {
      */
     public static final String FUNC_SPEAKS_RELAY4 = "speaks_relay4";
     /**
+     * 関数名：end_app
+     */
+    public static final String FUNC_SWITCH_LANGUAGE_TO_TARGET = "change_lang_to_target";
+    /**
+     * 関数名：end_app
+     */
+    public static final String FUNC_SWITCH_BACK_TO_JP = "change_lang_to_jp";
+    /**
      * キー：lvcsr_basic
      */
     public static final String KEY_LVCSR_BASIC = "Lvcsr_Basic";
