@@ -368,8 +368,6 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                     //次のシナリオの呼び出し
                     VoiceUIManagerUtil.startSpeech(mVUIManager, VoiceUIVariableUtil.getVariableData(variables, ScenarioDefinitions.KEY_SCENARIO));
                 }
-
-
                 break;
             case VoiceUIListenerImpl.RESOLVE_VARIABLE:
             case VoiceUIListenerImpl.ACTION_START:
