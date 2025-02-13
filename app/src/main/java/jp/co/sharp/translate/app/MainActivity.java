@@ -60,8 +60,8 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
     private Spinner inputSpinner;//いろんな関数で触るためここで宣言
     private String targetLanguage;//翻訳先言語をアクティビティ側でも保存する　シナリオ側ではpメモリのjp.co.sharp.translate.app.targetLanguageに保存される
     private Spinner targetSpinner;//いろんな関数で触るためここで宣言
-    private EditText inputTextValue;
-    private TextView outputTextValue;
+    private EditText inputTextValue;//翻訳前の単語の入力欄
+    private TextView outputTextValue;//翻訳後の単語の出力欄
     private Button resultExpainButton;//説明ボタン
     private final int max_length = 100;//翻訳前後の文の長さの許容限界
 
