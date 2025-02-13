@@ -5,16 +5,16 @@
         <description>英単語を発話するシナリオ</description>
         <scene value="jp.co.sharp.translate.app.scene_common"/>
         <version value="1.0"/>
-        <accost priority="73" topic_id="t1" word="jp.co.sharp.translate.app.speak_explanation.t1"/>
-        <accost priority="73" topic_id="t2" word="jp.co.sharp.translate.app.speak_explanation.t2"/>
-        <accost priority="73" topic_id="t3" word="jp.co.sharp.translate.app.speak_explanation.t3"/>
+        <accost priority="73" topic_id="t1" word="jp.co.sharp.translate.app.speakExplanation.t1"/>
+        <accost priority="73" topic_id="t2" word="jp.co.sharp.translate.app.speakExplanation.t2"/>
+        <accost priority="73" topic_id="t3" word="jp.co.sharp.translate.app.speakExplanation.t3"/>
     </head>
     <body>
         <topic id="t1" listen="false">
             <action index="1">
                 <control function="change_language" target="jp.co.sharp.translate.app">
                     <data key="language" value="${memory_p:jp.co.sharp.translate.app.targetLanguage}"/>
-                    <data key="scenario" value="jp.co.sharp.translate.app.speak_explanation.t2"/>
+                    <data key="scenario" value="jp.co.sharp.translate.app.speakExplanation.t2"/>
                 </control>
             </action>
         </topic>
@@ -26,7 +26,7 @@
             <action index="2">
                 <control function="change_language" target="jp.co.sharp.translate.app">
                     <data key="language" value="日本語"/>
-                    <data key="scenario" value="jp.co.sharp.translate.app.speak_explanation.t3"/>
+                    <data key="scenario" value="jp.co.sharp.translate.app.speakExplanation.t3"/>
                 </control>
             </action>
         </topic>
