@@ -362,22 +362,14 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                     }
                 }
 
-                if(ScenarioDefinitions.FUNC_SPEAKS_RELAY1.equals(function)){//speaksシナリオの中継　その1
-                    setLanguageTts(inputLanguage);//翻訳前の言語を発話するための発話言語の変更
-                    VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAKS + ".t2");
+                if(ScenarioDefinitions.FUNC_CHANGE_LANGUAGE.equals(function)){
+                    //発話言語の変更
+                    setLanguageTts(VoiceUIVariableUtil.getVariableData(variables, ScenarioDefinitions.KEY_LANGUAGE));
+                    //次のシナリオの呼び出し
+                    VoiceUIManagerUtil.startSpeech(mVUIManager, VoiceUIVariableUtil.getVariableData(variables, ScenarioDefinitions.KEY_SCENARIO));
                 }
-                if(ScenarioDefinitions.FUNC_SPEAKS_RELAY2.equals(function)){//speaksシナリオの中継　その2
-                    setLanguageTts("日本語");//発話言語の変更
-                    VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAKS + ".t3");
-                }
-                if(ScenarioDefinitions.FUNC_SPEAKS_RELAY3.equals(function)) {//speaksシナリオの中継　その3
-                    setLanguageTts(targetLanguage);//翻訳後の言語を発話するための発話言語の変更
-                    VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAKS + ".t4");
-                }
-                if(ScenarioDefinitions.FUNC_SPEAKS_RELAY4.equals(function)) {//speaksシナリオの中継　その4
-                    setLanguageTts("日本語");//発話言語の変更
-                    VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAKS + ".t5");
-                }
+
+
                 if(ScenarioDefinitions.FUNC_SWITCH_LANGUAGE_TO_TARGET.equals(function)){
                     if(Objects.equals(targetLanguage, "日本語")) {
                         VoiceUIManagerUtil.setTts(mVUIManager, Locale.JAPAN);//発話言語の変更

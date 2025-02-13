@@ -14,7 +14,10 @@
     <body>
         <topic id="t1" listen="false">
             <action index="1">
-                <control function="speaks_relay1" target="jp.co.sharp.translate.app"/>
+                <control function="change_language" target="jp.co.sharp.translate.app">
+                    <data key="language" value="${memory_p:jp.co.sharp.translate.app.inputLanguage}"/>
+                    <data key="scenario" value="jp.co.sharp.translate.app.speaks.t2"/>
+                </control>
             </action>
         </topic>
         <topic id="t2" listen="false">
@@ -23,7 +26,10 @@
                 <behavior id="assign" type="normal"/>
             </action>
             <action index="2">
-                <control function="speaks_relay2" target="jp.co.sharp.translate.app"/>
+                <control function="change_language" target="jp.co.sharp.translate.app">
+                    <data key="language" value="日本語"/>
+                    <data key="scenario" value="jp.co.sharp.translate.app.speaks.t3"/>
+                </control>
             </action>
         </topic>
         <topic id="t3" listen="false">
@@ -32,7 +38,10 @@
                 <behavior id="assign" type="normal"/>
             </action>
             <action index="2">
-                <control function="speaks_relay3" target="jp.co.sharp.translate.app"/>
+                <control function="change_language" target="jp.co.sharp.translate.app">
+                    <data key="language" value="${memory_p:jp.co.sharp.translate.app.targetLanguage}"/>
+                    <data key="scenario" value="jp.co.sharp.translate.app.speaks.t4"/>
+                </control>
             </action>
         </topic>
         <topic id="t4" listen="false">
@@ -41,7 +50,10 @@
                 <behavior id="assign" type="normal"/>
             </action>
             <action index="2">
-                <control function="speaks_relay4" target="jp.co.sharp.translate.app"/>
+                <control function="change_language" target="jp.co.sharp.translate.app">
+                    <data key="language" value="日本語"/>
+                    <data key="scenario" value="jp.co.sharp.translate.app.speaks.t5"/>
+                </control>
             </action>
         </topic>
         <topic id="t5" listen="false">

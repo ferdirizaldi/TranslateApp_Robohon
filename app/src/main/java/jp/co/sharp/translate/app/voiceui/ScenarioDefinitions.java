@@ -101,19 +101,7 @@ public class ScenarioDefinitions {
     /**
      * 関数名：end_app
      */
-    public static final String FUNC_SPEAKS_RELAY1 = "speaks_relay1";
-    /**
-     * 関数名：end_app
-     */
-    public static final String FUNC_SPEAKS_RELAY2 = "speaks_relay2";
-    /**
-     * 関数名：end_app
-     */
-    public static final String FUNC_SPEAKS_RELAY3 = "speaks_relay3";
-    /**
-     * 関数名：end_app
-     */
-    public static final String FUNC_SPEAKS_RELAY4 = "speaks_relay4";
+    public static final String FUNC_CHANGE_LANGUAGE = "change_language";
     /**
      * 関数名：end_app
      */
@@ -134,6 +122,14 @@ public class ScenarioDefinitions {
      * キー：inputLanguage
      */
     public static final String KEY_INPUT = "inputLanguage";
+    /**
+     * キー：language
+     */
+    public static final String KEY_LANGUAGE = "language";
+    /**
+     * キー：scenario
+     */
+    public static final String KEY_SCENARIO = "scenario";
     /**
      * 翻訳前の単語
      */
