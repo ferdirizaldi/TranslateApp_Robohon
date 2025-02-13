@@ -147,11 +147,10 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
             public void onItemSelected(AdapterView<?> parent,
                                        View view, int position, long id) {
                 Spinner spinner = (Spinner)parent;
-                String item = (String)spinner.getSelectedItem();
                 //翻訳前言語をjavaで使えるよう格納する
-                inputLanguage = item;
+                inputLanguage = (String)spinner.getSelectedItem();
                 //翻訳前言語をspeakシナリオの手が届くpメモリに送る
-                int result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_INPUT, item);
+                int result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_INPUT, inputLanguage);
                 //認識言語を変更する
                 setLanguageAsr(inputLanguage);
                 //入出力バーを空にする
@@ -184,11 +183,10 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
             public void onItemSelected(AdapterView<?> parent,
                                        View view, int position, long id) {
                 Spinner spinner = (Spinner)parent;
-                String item = (String)spinner.getSelectedItem();
                 //翻訳先言語をjavaで使えるよう格納する
-                targetLanguage = item;
+                targetLanguage = (String)spinner.getSelectedItem();
                 //翻訳先言語をspeakシナリオの手が届くpメモリに送る
-                int result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_TARGET, item);
+                int result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_TARGET, targetLanguage);
                 //出力バーを空にする
                 runOnUiThread(new Runnable() {
                     @Override
