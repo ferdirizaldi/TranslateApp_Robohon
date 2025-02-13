@@ -153,18 +153,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                 //翻訳前言語をspeakシナリオの手が届くpメモリに送る
                 int result = VoiceUIManagerUtil.setMemory(mVUIManager, ScenarioDefinitions.MEM_P_INPUT, item);
                 //認識言語を変更する
-                if(Objects.equals(inputLanguage, "日本語")) {
-                    VoiceUIManagerUtil.setAsr(mVUIManager, Locale.JAPAN);//認識言語の変更
-                }
-                if(Objects.equals(inputLanguage, "英語")) {
-                    VoiceUIManagerUtil.setAsr(mVUIManager, Locale.US);//認識言語の変更
-                }
-                if(Objects.equals(inputLanguage, "中国語")) {
-                    VoiceUIManagerUtil.setAsr(mVUIManager, Locale.CHINA);//認識言語の変更
-                }
-                if(Objects.equals(inputLanguage, "韓国語")) {
-                    VoiceUIManagerUtil.setAsr(mVUIManager, Locale.KOREA);//認識言語の変更
-                }
+                setLanguageAsr(inputLanguage);
                 //入出力バーを空にする
                 runOnUiThread(new Runnable() {
                     @Override
@@ -334,25 +323,10 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                     Log.v(TAG,"Set InputLanguage:" + inputLanguage);
 
                     // R.array.languagesの内容をString配列として取得し、UIスレッド内で翻訳先言語ボックスを入力された言語(の番号を検索しその番号)に切り替える
-                    String[] languages = getResources().getStringArray(R.array.inputLanguages);
-                    String finalInputLanguage = inputLanguage;//UIスレッドで使用するためにfinal宣言
-                    runOnUiThread(() -> {
-                        inputSpinner.setSelection(Arrays.asList(languages).indexOf(finalInputLanguage));
-                    });
+                    setSpinner(inputLanguage,getResources().getStringArray(R.array.inputLanguages));
 
                     //認識言語を変更する
-                    if(Objects.equals(inputLanguage, "日本語")) {
-                        VoiceUIManagerUtil.setAsr(mVUIManager, Locale.JAPAN);//認識言語の変更
-                    }
-                    if(Objects.equals(inputLanguage, "英語")) {
-                        VoiceUIManagerUtil.setAsr(mVUIManager, Locale.US);//認識言語の変更
-                    }
-                    if(Objects.equals(inputLanguage, "中国語")) {
-                        VoiceUIManagerUtil.setAsr(mVUIManager, Locale.CHINA);//認識言語の変更
-                    }
-                    if(Objects.equals(inputLanguage, "韓国語")) {
-                        VoiceUIManagerUtil.setAsr(mVUIManager, Locale.KOREA);//認識言語の変更
-                    }
+                    setLanguageAsr(inputLanguage);
                     //入出力バーを空にする
                     runOnUiThread(new Runnable() {
                         @Override
@@ -377,11 +351,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                     }
 
                     // R.array.languagesの内容をString配列として取得し、UIスレッド内で翻訳先言語ボックスを入力された言語(の番号を検索しその番号)に切り替える
-                    String[] languages = getResources().getStringArray(R.array.targetLanguages);
-                    String finalTargetLanguage = targetLanguage;//UIスレッドで使用するためにfinal宣言
-                    runOnUiThread(() -> {
-                        targetSpinner.setSelection(Arrays.asList(languages).indexOf(finalTargetLanguage));
-                    });
+                    setSpinner(targetLanguage,getResources().getStringArray(R.array.targetLanguages));
 
                     if (!inputTextValue.getText().toString().trim().equals("")) {//入力バーに単語が入力済みなら
                         //入力テキストを取得しspeakシナリオへ
@@ -393,42 +363,19 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                 }
 
                 if(ScenarioDefinitions.FUNC_SPEAKS_RELAY1.equals(function)){//speaksシナリオの中継　その1
-                    //翻訳前の言語を発話するための発話言語の変更
-                    if(Objects.equals(inputLanguage, "日本語")) {
-                        VoiceUIManagerUtil.setTts(mVUIManager, Locale.JAPAN);
-                    }
-                    if(Objects.equals(inputLanguage, "英語")) {
-                        VoiceUIManagerUtil.setTts(mVUIManager, Locale.US);
-                    }
-                    if(Objects.equals(inputLanguage, "中国語")) {
-                        VoiceUIManagerUtil.setTts(mVUIManager, Locale.CHINA);
-                    }
-                    if(Objects.equals(inputLanguage, "韓国語")) {
-                        VoiceUIManagerUtil.setTts(mVUIManager, Locale.KOREA);
-                    }
+                    setLanguageTts(inputLanguage);//翻訳前の言語を発話するための発話言語の変更
                     VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAKS + ".t2");
                 }
                 if(ScenarioDefinitions.FUNC_SPEAKS_RELAY2.equals(function)){//speaksシナリオの中継　その2
-                    VoiceUIManagerUtil.setTts(mVUIManager, Locale.JAPAN);//発話言語の変更
+                    setLanguageTts("日本語");//発話言語の変更
                     VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAKS + ".t3");
                 }
                 if(ScenarioDefinitions.FUNC_SPEAKS_RELAY3.equals(function)) {//speaksシナリオの中継　その3
-                    if(Objects.equals(targetLanguage, "日本語")) {
-                        VoiceUIManagerUtil.setTts(mVUIManager, Locale.JAPAN);//発話言語の変更
-                    }
-                    if(Objects.equals(targetLanguage, "英語")) {
-                        VoiceUIManagerUtil.setTts(mVUIManager, Locale.US);//発話言語の変更
-                    }
-                    if(Objects.equals(targetLanguage, "中国語")) {
-                        VoiceUIManagerUtil.setTts(mVUIManager, Locale.CHINA);//発話言語の変更
-                    }
-                    if(Objects.equals(targetLanguage, "韓国語")) {
-                        VoiceUIManagerUtil.setTts(mVUIManager, Locale.KOREA);//発話言語の変更
-                    }
+                    setLanguageTts(targetLanguage);//翻訳後の言語を発話するための発話言語の変更
                     VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAKS + ".t4");
                 }
                 if(ScenarioDefinitions.FUNC_SPEAKS_RELAY4.equals(function)) {//speaksシナリオの中継　その4
-                    VoiceUIManagerUtil.setTts(mVUIManager, Locale.JAPAN);//発話言語の変更
+                    setLanguageTts("日本語");//発話言語の変更
                     VoiceUIManagerUtil.startSpeech(mVUIManager, ScenarioDefinitions.ACC_SPEAKS + ".t5");
                 }
                 break;
@@ -436,6 +383,55 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
             case VoiceUIListenerImpl.ACTION_START:
             case VoiceUIListenerImpl.ACTION_CANCELLED:
             case VoiceUIListenerImpl.ACTION_REJECTED:
+            default:
+                break;
+        }
+    }
+
+    // R.array.languagesの内容をString配列として取得し、UIスレッド内で翻訳先言語ボックスを入力された言語(の番号を検索しその番号)に切り替える
+    private void setSpinner(final String language, final String[] languages){
+
+        runOnUiThread(() -> {
+            targetSpinner.setSelection(Arrays.asList(languages).indexOf(language));
+        });
+
+    }
+
+    //認識言語を変更する
+    private void setLanguageAsr(String language){
+        switch (language) {
+            case "日本語":
+                VoiceUIManagerUtil.setAsr(mVUIManager, Locale.JAPAN);
+                break;
+            case "英語":
+                VoiceUIManagerUtil.setAsr(mVUIManager, Locale.US);
+                break;
+            case "中国語":
+                VoiceUIManagerUtil.setAsr(mVUIManager, Locale.CHINA);
+                break;
+            case "韓国語":
+                VoiceUIManagerUtil.setAsr(mVUIManager, Locale.KOREA);
+                break;
+            default:
+                break;
+        }
+    }
+
+    //発話言語を変更する
+    private void setLanguageTts(String language) {
+        switch (language) {
+            case "日本語":
+                VoiceUIManagerUtil.setTts(mVUIManager, Locale.JAPAN);
+                break;
+            case "英語":
+                VoiceUIManagerUtil.setTts(mVUIManager, Locale.US);
+                break;
+            case "中国語":
+                VoiceUIManagerUtil.setTts(mVUIManager, Locale.CHINA);
+                break;
+            case "韓国語":
+                VoiceUIManagerUtil.setTts(mVUIManager, Locale.KOREA);
+                break;
             default:
                 break;
         }
