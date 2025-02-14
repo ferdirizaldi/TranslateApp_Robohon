@@ -5,12 +5,12 @@
         <description>翻訳前言語切り替えコマンドを聞き取りアプリに送るシナリオ</description>
         <scene value="jp.co.sharp.translate.app.scene_common"/>
         <version value="1.0"/>
-        <situation priority="74" topic_id="日本語" trigger="user-word">${Lvcsr:Basic} include [日本語を,ほんごを,日本語から,ほんごから,japanese,日语,일본]</situation>
-        <situation priority="74" topic_id="英語" trigger="user-word">${Lvcsr:Basic} include [英語を,いごを,英語から,いごから,english,英语,영]</situation>
-        <situation priority="74" topic_id="中国語" trigger="user-word">${Lvcsr:Basic} include [中国語を,うごくごを,中国語から,うごくごから,chinese,中文,중국]</situation>
-        <situation priority="74" topic_id="韓国語" trigger="user-word">${Lvcsr:Basic} include [韓国語を,んこくごを,韓国語から,んこくごから,korean,韩语,한국]</situation>
-        <!--日本語:日语(Rìyǔ)、英語:英语(Yīngyǔ)、中国語:中文(Zhōngwén)、韓国語:韩语(Hányǔ)-->
-        <!--日本語:일본어(Ilbon-eo)、英語:영어(Yeongeo)、中国語:중국어(Junggug-eo)、韓国語:한국어(Hangug-eo)-->
+        <situation priority="74" topic_id="日本語" trigger="user-word">${Lvcsr:Basic} include [日本語を,ほんごを,日本語から,ほんごから,from_japanese,form_japanese,farm_japanese,front_japanese,flom_japanese,将日语,将日,일본어를,일본를]</situation>
+        <situation priority="74" topic_id="英語" trigger="user-word">${Lvcsr:Basic} include [英語を,いごを,英語から,いごから,from_english,form_english,farm_english,front_english,flom_english,将英语,将英,영어를,영를]</situation>
+        <situation priority="74" topic_id="中国語" trigger="user-word">${Lvcsr:Basic} include [中国語を,うごくごを,中国語から,うごくごから,from_chinese,form_chinese,farm_chinese,front_chinese,flom_chinese,将中文,将中,중국어를,중국를]</situation>
+        <situation priority="74" topic_id="韓国語" trigger="user-word">${Lvcsr:Basic} include [韓国語を,んこくごを,韓国語から,んこくごから,from_korean,form_korean,farm_korean,front_korean,flom_korean,将韩语,将韩,한국어를,한국를]</situation>
+        <!--日本語:日语(Rìyǔ)、英語:英语(Yīngyǔ)、中国語:中文(Zhōngwén)、韓国語:韩语(Hányǔ)、～を:将（jiāng）-->
+        <!--日本語:일본어(Ilbon-eo)、英語:영어(Yeongeo)、中国語:중국어(Junggug-eo)、韓国語:한국어(Hangug-eo)、～を:를（reul)-->
     </head>
     <body>
         <topic id="日本語" listen="false">
