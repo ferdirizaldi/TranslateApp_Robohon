@@ -62,7 +62,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
     private Spinner targetSpinner;//いろんな関数で触るためここで宣言
     private EditText inputTextValue;//翻訳前の単語の入力欄
     private TextView outputTextValue;//翻訳後の単語の出力欄
-    private Button resultExpainButton;//説明ボタン
+    private Button resultExplainButton;//説明ボタン
     private final int max_length = 100;//翻訳前後の文の長さの許容限界
 
     @Override
@@ -93,14 +93,14 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
         voiceTranslateButton.setEnabled(false);//最初は使用不可
 
         // 説明ボタン表示
-        resultExpainButton = (Button) findViewById(R.id.result_explain_button);
-        resultExpainButton.setOnClickListener(new View.OnClickListener() {
+        resultExplainButton = (Button) findViewById(R.id.result_explain_button);
+        resultExplainButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startExplainScenario(outputTextValue.getText().toString());
             }
         });
-        resultExpainButton.setEnabled(false);//最初は使用不可
+        resultExplainButton.setEnabled(false);//最初は使用不可
 
         // 終了ボタン取得
         Button finishButton = (Button) findViewById(R.id.finish_app_button);
@@ -159,7 +159,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                     public void run() {
                         inputTextValue.setText("");
                         outputTextValue.setText("");
-                        resultExpainButton.setEnabled(false);//出力バーが空になったので説明ボタンを使用不可にする
+                        resultExplainButton.setEnabled(false);//出力バーが空になったので説明ボタンを使用不可にする
                     }
                 });
             }
@@ -192,7 +192,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                     @Override
                     public void run() {
                         outputTextValue.setText("");
-                        resultExpainButton.setEnabled(false);//出力バーが空になったので説明ボタンを使用不可にする
+                        resultExplainButton.setEnabled(false);//出力バーが空になったので説明ボタンを使用不可にする
                     }
                 });
             }
@@ -331,7 +331,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                         public void run() {
                             inputTextValue.setText("");
                             outputTextValue.setText("");
-                            resultExpainButton.setEnabled(false);//出力バーが空になったので説明ボタンを使用不可にする
+                            resultExplainButton.setEnabled(false);//出力バーが空になったので説明ボタンを使用不可にする
                         }
                     });
 
@@ -480,7 +480,7 @@ public class MainActivity extends Activity implements VoiceUIListenerImpl.Scenar
                 @Override
                 public void run() {
                     outputTextValue.setText(translated_word);
-                    resultExpainButton.setEnabled(true);//出力バーに文字が表示されたので説明ボタンを使用可能にする
+                    resultExplainButton.setEnabled(true);//出力バーに文字が表示されたので説明ボタンを使用可能にする
                 }
             });
         }
